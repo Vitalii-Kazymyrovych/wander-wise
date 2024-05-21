@@ -1,0 +1,88 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-cards-table
+      author: Vitalii
+      changes:
+        - createTable:
+            tableName: cards
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: full_name
+                  type: varchar(500)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: author
+                  type: varchar(255)
+                  defaultValue: 'AI'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: trip_types
+                  type: varchar(1000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: climate
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: special_requirements
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: why_this_place
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image_links
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: map_link
+                  type: varchar(1000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: latitude
+                  type: float
+                  constraints:
+                    nullable: false
+              - column:
+                  name: longitude
+                  type: float
+                  constraints:
+                    nullable: false
+              - column:
+                  name: likes
+                  type: bigint
+                  defaultValue: 0
+              - column:
+                  name: reports
+                  type: bigint
+                  defaultValue: 0
+              - column:
+                  name: shown
+                  type: boolean
+                  defaultValue: true
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValue: false

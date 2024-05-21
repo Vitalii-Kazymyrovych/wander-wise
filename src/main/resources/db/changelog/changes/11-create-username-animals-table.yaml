@@ -1,0 +1,624 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-username-animals-table
+      author: Vitalii
+      changes:
+        - createTable:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: insert-animals
+      author: Vitalii
+      changes:
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: SiberianTiger
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: ArabianHorse
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: ArcticFox
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: BeadletAnemone
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Black-backedKingfisher
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: BlueandGoldMacaw
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: BlueGlaucus
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: CaliforniaRed-sidedGarterSnake
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: CandyCrab
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: CloudedLeopard
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Costa’sHummingbird
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: FireSalamander
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Fleischmann’sGlassFrog
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: FriesianHorse
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: GiantPanda
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: GlasswingedButterfly
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Green-headedTanager
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: LeafySeaDragon
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Lilac-breastedRoller
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Lion
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Tiger
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Cheetah
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Peacock
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: RedPanda
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: MalayanTiger
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Lynx
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: RedFox
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Wolf
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: WhiteLion
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: SumatranTiger
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Leopard
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: SiberianHusky
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Cougar
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: LeopardCat
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: PolarBear
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Macaw
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Dolphin
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: EurasianLynx
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: GoldenPheasant
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: IslandFox
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Stallion
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: PandaBear
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: SnowLeopard
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: WhiteTiger
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Jaguar
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Ocelot
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: NorwegianForestCat
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: BaldEagle
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Flamingo
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: EmperorPenguin
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Mandarinfish
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Clownfish
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Chameleon
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Okapi
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Narwhal
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: ManedWolf
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Axolotl
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Quokka
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Koala
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Platypus
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: ThornyDevil
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Cassowary
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Toucan
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Orca
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: MantaRay
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Hummingbird
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Gazelle
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Giraffe
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Zebra
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Hippopotamus
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Elephant
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Rhinoceros
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Gorilla
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Chimpanzee
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Orangutan
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Bonobo
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Lemur
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Capybara
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Sloth
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Armadillo
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Anteater
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Kangaroo
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Wallaby
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Emu
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Kiwi
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Albatross
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: SeaTurtle
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Starfish
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Seahorse
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Jellyfish
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Octopus
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Cuttlefish
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Squid
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: WhaleShark
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: GreatWhiteShark
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: HammerheadShark
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: MakoShark
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: Whale
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: AfricanElephant
+        - insert:
+            tableName: username_animals
+            columns:
+              - column:
+                  name: name
+                  value: BengalTiger

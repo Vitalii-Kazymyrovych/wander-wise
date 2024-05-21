@@ -1,0 +1,624 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-username-colors-table
+      author: Vitalii
+      changes:
+        - createTable:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: insert-colors
+      author: Vitalii
+      changes:
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Red
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Yellow
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Green
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Cyan
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Blue
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Magenta
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Orange
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Chartreuse
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: SpringGreen
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Azure
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Violet
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Brown
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Purple
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Pink
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: White
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Black
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Rose
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Gray
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AirForceBlue
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AliceBlue
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AlizarinCrimson
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Almond
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Amaranth
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Amber
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AmericanRose
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Amethyst
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AndroidGreen
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Anti-flashWhite
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AntiqueBrass
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AntiqueFuchsia
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AntiqueWhite
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AoGreen
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AppleGreen
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Apricot
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Aqua
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Aquamarine
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: ArmyGreen
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: ArylideYellow
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AshGrey
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Asparagus
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AtomicTangerine
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Auburn
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Aureolin
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AuroMetalSaurus
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Awesome
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: AzureMist
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BabyBlue
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BabyBlueEyes
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BabyPink
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BallBlue
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BananaMania
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BananaYellow
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BattleshipGrey
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Bazaar
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BeauBlue
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Beaver
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Beige
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Bisque
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Bistre
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Bittersweet
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BlanchedAlmond
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BleudeFrance
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BlizzardBlue
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Blond
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BlueBell
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BlueGray
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BlueGreen
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BluePurple
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BlueViolet
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Blush
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Bole
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BondiBlue
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Bone
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BostonUniversityRed
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BottleGreen
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Boysenberry
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrandeisBlue
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Brass
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrickRed
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrightCerulean
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrightGreen
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrightLavender
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrightMaroon
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrightPink
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrightTurquoise
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrightUbe
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrilliantLavender
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrilliantRose
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrinkPink
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BritishRacingGreen
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Bronze
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrownSugar
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BrunswickGreen
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BubbleGum
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Bubbles
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Buff
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BulgarianRose
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Burgundy
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: Burlywood
+        - insert:
+            tableName: username_colors
+            columns:
+              - column:
+                  name: name
+                  value: BurntOrange

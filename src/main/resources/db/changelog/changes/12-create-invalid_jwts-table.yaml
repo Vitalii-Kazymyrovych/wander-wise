@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-invalid_jwts-table
+      author: Vitalii
+      changes:
+        - createTable:
+            tableName: invalid_jwts
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: jwt
+                  type: varchar(255)
+              - column:
+                  name: time_stamp
+                  type: timestamp
+                  constraints:
+                    nullable: false

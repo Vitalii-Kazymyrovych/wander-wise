@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-comments-table
+      author: Vitalii
+      changes:
+        - createTable:
+            tableName: comments
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_comments_users
+                    references: users(id)
+              - column:
+                  name: card_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_comments_cards
+                    references: cards(id)
+              - column:
+                  name: time_stamp
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: text
+                  type: varchar(5000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: stars
+                  type: int
+                  constraints:
+                    nullable: false
+                    defaultValue: 5
+              - column:
+                  name: reports
+                  type: bigint
+                  defaultValue: 0
+              - column:
+                  name: shown
+                  type: boolean
+                  defaultValue: true
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValue: false

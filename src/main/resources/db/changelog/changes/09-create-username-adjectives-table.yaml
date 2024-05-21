@@ -1,0 +1,624 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-username-adjectives-table
+      author: Vitalii
+      changes:
+        - createTable:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: insert-adjectives
+      author: Vitalii
+      changes:
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Admirable
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Adorable
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Alluring
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                 name: name
+                 value: Amazing
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Angelic
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Appealing
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Astounding
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Attractive
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Beauteous
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Beautiful
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Bewitching
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Breathtaking
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Brilliant
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Charming
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Classy
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Compelling
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Dazzling
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Delightful
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Divine
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Elegant
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Enchanting
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Endearing
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Engaging
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Enticing
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Exquisite
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Extraordinary
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Fabulous
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Fantastic
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Fascinating
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Fetching
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Fine
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Glamorous
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Glorious
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Gorgeous
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Graceful
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Grand
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Handsome
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Ideal
+        - insert:
+            tableName: username_adjectives
+            columns:
+             - column:
+                 name: name
+                 value: Impressive
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Incredible
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Irresistible
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Lovely
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Luminous
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Magnificent
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Majestic
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Marvelous
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Mesmerizing
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Mind-blowing
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Outstanding
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Phenomenal
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Pleasing
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Pretty
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Radiant
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Ravishing
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Remarkable
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Resplendent
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Scintillating
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Sensational
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Shining
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Slick
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Smart
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Sparkling
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Splendid
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Stunning
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Sublime
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Superb
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Superior
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Supreme
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Sweet
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Tantalizing
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Terrific
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Thrilling
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Transcendent
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Tremendous
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Unbelievable
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Unforgettable
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Unique
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Unrivaled
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Uplifting
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Vibrant
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Wonderful
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Wondrous
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Exemplary
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Exotic
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Flawless
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Idealistic
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Imaginative
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Impeccable
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Incandescent
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Incomparable
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Indomitable
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Ineffable
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Inspirational
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Intrepid
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Inventive
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Legendary
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Lively
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Masterful
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Matchless
+        - insert:
+            tableName: username_adjectives
+            columns:
+              - column:
+                  name: name
+                  value: Mythical

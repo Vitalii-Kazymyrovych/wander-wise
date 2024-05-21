@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-collections-table
+      author: Vitalii
+      changes:
+        - createTable:
+            tableName: collections
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_collections_user
+                    references: users(id)
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: image_link
+                  type: varchar(255)
+              - column:
+                  name: is_public
+                  type: boolean
+                  defaultValue: false
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValue: false

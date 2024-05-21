@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-collection-card-table
+      author: Vitalii
+      changes:
+        - createTable:
+            tableName: collection_card
+            columns:
+              - column:
+                  name: collection_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_collection_card_collection
+                    references: collections(id)
+                    nullable: false
+              - column:
+                  name: card_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_collection_card_card
+                    references: cards(id)
+                    nullable: false

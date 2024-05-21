@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/01-create-users-table.yaml
+  - include:
+      file: db/changelog/changes/02-create-roles-table.yaml
+  - include:
+      file: db/changelog/changes/03-create-user-role-table.yaml
+  - include:
+      file: db/changelog/changes/04-create-cards-table.yaml
+  - include:
+      file: db/changelog/changes/05-create-comments-table.yaml
+  - include:
+      file: db/changelog/changes/06-create-collections-table.yaml
+  - include:
+      file: db/changelog/changes/07-create-collection-card-table.yaml
+  - include:
+      file: db/changelog/changes/08-create-social-links-table.yaml
+  - include:
+      file: db/changelog/changes/09-create-username-adjectives-table.yaml
+  - include:
+      file: db/changelog/changes/10-create-username-colors-table.yaml
+  - include:
+      file: db/changelog/changes/11-create-username-animals-table.yaml
+  - include:
+      file: db/changelog/changes/12-create-invalid_jwts-table.yaml

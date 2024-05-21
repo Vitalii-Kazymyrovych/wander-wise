@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-social-links-table
+      author: Vitalii
+      changes:
+        - createTable:
+            tableName: social_links
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_social_links_user
+                    references: users(id)
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: link
+                  type: varchar(255)
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValue: false
