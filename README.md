@@ -35,9 +35,11 @@ The project leverages a robust stack of technologies to ensure scalability, secu
 - **Spring Security**
 - **Spring Mail**
 - **Spring Cloud AWS**
+- **Spring AOP**
 - **MySQL**
 - **Hibernate**
 - **Liquibase**
+- **Log4j2**
 - **JUnit**
 - **Testcontainers**
 - **Lombok**
@@ -79,7 +81,7 @@ Here are provided only short descriptions for each controller.
 ## Database structure
 Here is the comprehensive model of the actual project db structure.
 
-![relationships.real.large.png](relationships.real.large.png)
+![database-structure.png](database-structure.png)
 
 ## Setup and Usage
 To set up and run Wander Wise locally, follow these steps:

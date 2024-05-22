@@ -2,6 +2,7 @@ package wander.wise.application.service.user;
 
 import java.util.Set;
 import org.springframework.web.multipart.MultipartFile;
+import wander.wise.application.dto.collection.CollectionDto;
 import wander.wise.application.dto.collection.CollectionWithoutCardsDto;
 import wander.wise.application.dto.comment.CommentDto;
 import wander.wise.application.dto.social.link.SocialLinkDto;
@@ -43,7 +44,7 @@ public interface UserService {
 
     Set<SocialLinkDto> getUserSocialLinks(Long id);
 
-    Set<CollectionWithoutCardsDto> getUserCollections(Long id, String email);
+    Set<CollectionDto> getUserCollections(Long id, String email);
 
     Set<CommentDto> getUserComments(Long id, String email);
 

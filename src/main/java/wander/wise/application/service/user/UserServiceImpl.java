@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import wander.wise.application.dto.collection.CollectionDto;
 import wander.wise.application.dto.collection.CollectionWithoutCardsDto;
 import wander.wise.application.dto.comment.CommentDto;
 import wander.wise.application.dto.social.link.SocialLinkDto;
@@ -111,11 +112,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<CollectionWithoutCardsDto> getUserCollections(Long id, String email) {
+    public Set<CollectionDto> getUserCollections(Long id, String email) {
         User user = findUserAndAuthorize(id, email);
         Set<Collection> collections = getCollectionsAndInitializeImageLinks(user);
         return collections.stream()
-                .map(collectionMapper::toCollectionWithoutCardsDto)
+                .map(collectionMapper::toDto)
                 .collect(Collectors.toSet());
     }
 
