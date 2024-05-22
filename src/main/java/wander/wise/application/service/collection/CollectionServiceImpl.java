@@ -32,6 +32,7 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+    @Transactional
     public CollectionDto findById(Long id, String email) {
         Collection foudCollection = collectionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(

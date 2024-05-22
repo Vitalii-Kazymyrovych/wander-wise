@@ -94,6 +94,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto findById(Long id) {
         return userMapper.toDto(userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -101,6 +102,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Set<SocialLinkDto> getUserSocialLinks(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -112,6 +114,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Set<CollectionDto> getUserCollections(Long id, String email) {
         User user = findUserAndAuthorize(id, email);
         Set<Collection> collections = getCollectionsAndInitializeImageLinks(user);
@@ -187,6 +190,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto requestUpdateUserEmail(Long id, String email,
                                           UpdateUserEmailRequestDto requestDto) {
         User updatedUser = findUserAndAuthorize(id, email);
@@ -244,6 +248,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User findUserAndAuthorize(Long id, String email) {
         User user = findUserEntityById(id);
         if (!user.getEmail().equals(email)) {
@@ -253,6 +258,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User findUserEntityById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -260,6 +266,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User findUserEntityByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException(

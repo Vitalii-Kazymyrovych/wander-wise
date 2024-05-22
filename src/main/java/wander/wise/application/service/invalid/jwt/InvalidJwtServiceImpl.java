@@ -3,6 +3,7 @@ package wander.wise.application.service.invalid.jwt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wander.wise.application.exception.custom.AuthorizationException;
 import wander.wise.application.model.InvalidJwt;
 import wander.wise.application.repository.invalid.jwt.InvalidJwtRepository;
