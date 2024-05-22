@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,6 +38,7 @@ import wander.wise.application.security.AuthenticationService;
 import wander.wise.application.service.user.UserService;
 
 @Tag(name = "Authentication endpoints")
+@Log4j2
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor

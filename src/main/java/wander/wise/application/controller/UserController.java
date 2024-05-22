@@ -32,6 +32,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,6 +48,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import wander.wise.application.dto.collection.CollectionDto;
 import wander.wise.application.dto.collection.CollectionWithoutCardsDto;
 import wander.wise.application.dto.comment.CommentDto;
 import wander.wise.application.dto.social.link.SocialLinkDto;
@@ -62,6 +65,7 @@ import wander.wise.application.service.user.UserService;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     @GetMapping("/{id}/profile")
@@ -79,8 +83,7 @@ public class UserController {
     @GetMapping("/{id}/collections")
     @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = GET_USER_COLLECTIONS_SUM, description = GET_USER_COLLECTIONS_DESC)
-    public Set<CollectionWithoutCardsDto> getUserCollections(@PathVariable Long id,
-                                                             Authentication authentication) {
+    public Set<CollectionDto> getUserCollections(@PathVariable Long id, Authentication authentication) {
         return userService.getUserCollections(id, authentication.getName());
     }
 
