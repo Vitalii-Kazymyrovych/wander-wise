@@ -5,6 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wander.wise.application.dto.user.UserDto;
 import wander.wise.application.dto.user.login.LoginRequestDto;
 import wander.wise.application.dto.user.login.LoginResponseDto;
@@ -22,6 +23,7 @@ public class AuthenticationService {
     private final UserMapper userMapper;
     private final InvalidJwtService invalidJwtService;
 
+    @Transactional
     public LoginResponseDto authenticate(LoginRequestDto requestDto) {
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -33,6 +35,7 @@ public class AuthenticationService {
         return new LoginResponseDto(authenticatedUser, token);
     }
 
+    @Transactional
     public LoginResponseDto refreshJwt(String email) {
         String token = jwtUtil.generateToken(email);
         UserDto authenticatedUser = userMapper.toDto(userRepository

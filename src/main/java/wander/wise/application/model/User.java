@@ -45,9 +45,9 @@ public class User implements UserDetails {
     private String profileImage;
     private String location;
     private String bio;
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<SocialLink> socialLinks = new HashSet<>();
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Collection> collections = new HashSet<>();
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

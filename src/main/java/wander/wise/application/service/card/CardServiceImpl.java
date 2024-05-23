@@ -105,6 +105,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @Transactional
     public CardDto findById(Long id) {
         return cardMapper.toDto(cardRepository.findById(id)
                 .filter(Card::isShown).orElseThrow(() -> new EntityNotFoundException(
@@ -112,6 +113,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @Transactional
     public CardDto findByIdAsAdmin(Long id) {
         return cardMapper.toDto(cardRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -241,6 +243,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @Transactional
     public SearchCardsResponseDto search(
             Pageable pageable,
             CardSearchParameters searchParams) {

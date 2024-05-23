@@ -29,12 +29,12 @@ public class Collection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
     private String name;
     @Column(name = "image_link")
     private String imageLink;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "collection_card",
             joinColumns = @JoinColumn(name = "collection_id"),
