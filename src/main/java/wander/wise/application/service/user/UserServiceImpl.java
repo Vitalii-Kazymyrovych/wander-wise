@@ -42,6 +42,7 @@ import wander.wise.application.security.JwtUtil;
 import wander.wise.application.service.api.email.EmailService;
 import wander.wise.application.service.api.storage.StorageService;
 
+import static wander.wise.application.constants.GlobalConstants.RANDOM;
 import static wander.wise.application.constants.GlobalConstants.RM_DIVIDER;
 
 @Service
@@ -57,7 +58,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder encoder;
-    private final Random random = new Random();
     private final EmailService emailService;
     private final JwtUtil jwtUtil;
     private final AuthenticationService authenticationService;
@@ -296,7 +296,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private String generateEmailConfirmCode() {
-        return "" + random.nextInt(1000, 9999);
+        return "" + RANDOM.nextInt(1000, 9999);
     }
 
     private String sendEmailConfirmCode(String email) {
@@ -314,7 +314,7 @@ public class UserServiceImpl implements UserService {
                 .append(pseudonymRepository.getAdjective())
                 .append(pseudonymRepository.getColor())
                 .append(pseudonymRepository.getAnimal())
-                .append(random.nextInt(1, 10000));
+                .append(RANDOM.nextInt(1, 10000));
         if (userRepository.existsByPseudonym(pseudonym.toString())) {
             return generatePseudonym();
         }

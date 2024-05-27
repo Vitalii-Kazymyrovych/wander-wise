@@ -12,6 +12,8 @@ import static wander.wise.application.constants.SwaggerConstants.FIND_CARD_BY_ID
 import static wander.wise.application.constants.SwaggerConstants.FIND_CARD_BY_ID_AS_ADMIN_SUM;
 import static wander.wise.application.constants.SwaggerConstants.FIND_CARD_BY_ID_DESC;
 import static wander.wise.application.constants.SwaggerConstants.FIND_CARD_BY_ID_SUM;
+import static wander.wise.application.constants.SwaggerConstants.GET_RANDOM_CARDS_DESC;
+import static wander.wise.application.constants.SwaggerConstants.GET_RANDOM_CARDS_SUM;
 import static wander.wise.application.constants.SwaggerConstants.HIDE_CARD_DESC;
 import static wander.wise.application.constants.SwaggerConstants.HIDE_CARD_SUM;
 import static wander.wise.application.constants.SwaggerConstants.POST_LIKE_TO_CARD_DESC;
@@ -33,6 +35,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.Arrays;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -226,5 +230,11 @@ public class CardController {
     public ResponseEntity<String> deleteCard(@PathVariable Long id, Authentication authentication) {
         cardService.deleteById(id, authentication.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/random/{number}")
+    @Operation(summary = GET_RANDOM_CARDS_SUM, description = GET_RANDOM_CARDS_DESC)
+    public List<CardDto> getRandomCards(@PathVariable Long number) {
+        return cardService.getRandomCards(number);
     }
 }

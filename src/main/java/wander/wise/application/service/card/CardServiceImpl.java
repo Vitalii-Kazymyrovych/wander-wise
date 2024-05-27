@@ -4,9 +4,14 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageImpl;
@@ -38,6 +43,7 @@ import wander.wise.application.service.api.maps.MapsApiService;
 import wander.wise.application.service.api.storage.StorageService;
 import wander.wise.application.service.user.UserService;
 
+import static wander.wise.application.constants.GlobalConstants.RANDOM;
 import static wander.wise.application.constants.GlobalConstants.RM_DIVIDER;
 import static wander.wise.application.constants.GlobalConstants.SEPARATOR;
 import static wander.wise.application.constants.GlobalConstants.SET_DIVIDER;
@@ -152,6 +158,19 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @Transactional
+    public List<CardDto> getRandomCards(Long number) {
+        long max = cardRepository.count();
+        Set<Card> randomCards = new HashSet<>();
+        for (int i = 0; i < number; i++) {
+            getRandomCard(max, randomCards);
+        }
+        return randomCards.stream()
+                .map(cardMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    @Transactional
     public boolean postLike(Long id, String email) {
         Card likedCard = findCardEntityById(id);
         Collection updatedLikedCards = getUsersLikedCards(email);
@@ -255,6 +274,15 @@ public class CardServiceImpl implements CardService {
                 .getLocationDtoByName(searchParams.startLocation());
         return new SearchCardsResponseDto(pageable.getPageNumber(),
                 initializeCardDtos(foundCards, startLocationCoordinates));
+    }
+
+    private void getRandomCard(long max, Set<Card> randomCards) {
+        Optional<Card> card = cardRepository.findById(RANDOM.nextLong(0, max));
+        if (card.isPresent() && card.get().isShown()) {
+            randomCards.add(card.get());
+        } else {
+            getRandomCard(max, randomCards);
+        }
     }
 
     private Collection getUsersLikedCards(String email) {

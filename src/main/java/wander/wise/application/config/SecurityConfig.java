@@ -57,6 +57,7 @@ public class SecurityConfig {
                                         "/auth/**",
                                         "/cards/search",
                                         "/cards/details/**",
+                                        "/cards/random/**",
                                         "/users/{id}/profile",
                                         "/users/{id}/social-links",
                                         "/v3/api-docs/**",

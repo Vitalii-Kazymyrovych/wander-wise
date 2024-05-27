@@ -6,13 +6,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Random;
 
+import static wander.wise.application.constants.GlobalConstants.RANDOM;
+
 @Repository
 @RequiredArgsConstructor
 public class PseudonymRepositoryImpl implements PseudonymRepository {
     private static final String GET_ADJECTIVE = "SELECT name FROM username_adjectives where id = ";
     private static final String GET_COLOR = "SELECT name FROM username_colors where id = ";
     private static final String GET_ANIMAL = "SELECT name FROM username_animals where id = ";
-    private static final Random RANDOM = new Random();
     private final EntityManager entityManager;
 
     @Override

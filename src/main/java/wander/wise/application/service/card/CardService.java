@@ -37,4 +37,6 @@ public interface CardService {
     boolean addCardToSaved(Long id, String email);
 
     boolean removeCardFromSaved(Long id, String email);
+
+    List<CardDto> getRandomCards(Long number);
 }

@@ -138,6 +138,19 @@ public class SwaggerConstants {
             - The search is performed based on the provided `CardSearchParameters`.
             - Pagination is supported through `Pageable`.
             - The search will attempt to find existing cards or generate new ones if necessary.""";
+    public static final String GET_RANDOM_CARDS_SUM = "Retrieve random cards";
+    public static final String GET_RANDOM_CARDS_DESC = """
+            1. **Possible response codes and messages:**
+            - `200 OK`: Successful retrieval of random cards
+            - `500 INTERNAL SERVER ERROR`: Unexpected error occurred
+            2. **Authorities that have access to the endpoint:**
+            -  Accessible by any user without authentication
+            3. **Exceptions that can be thrown:**
+            4. **Request fields constraints (according to validation):**
+            - `number`: must be a positive integer
+            5. **Other related information:**
+            This endpoint returns a list of randomly selected cards based on 
+            the number specified in the path variable.""";
     public static final String FIND_CARD_BY_ID_SUM = "Retrieve a card's details by its ID";
     public static final String FIND_CARD_BY_ID_DESC = """
             1. **Possible response codes and messages:**
