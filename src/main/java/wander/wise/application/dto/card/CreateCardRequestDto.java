@@ -7,9 +7,9 @@ import wander.wise.application.validation.map.link.MapLink;
 public record CreateCardRequestDto(
         @NotBlank String name,
         @NotBlank String populatedLocality,
-        @NotBlank String region,
+        String region,
         @NotBlank String country,
-        @NotBlank String continent,
+        String continent,
         @NotEmpty String[] tripTypes,
         @NotBlank String climate,
         @NotEmpty String[] specialRequirements,

@@ -24,7 +24,6 @@ import static wander.wise.application.constants.GlobalConstants.SET_DIVIDER;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +34,7 @@ import org.springframework.stereotype.Service;
 import wander.wise.application.dto.ai.AiResponseDto;
 import wander.wise.application.dto.ai.LocationListDto;
 import wander.wise.application.dto.card.CardSearchParameters;
+import wander.wise.application.dto.card.CreateCardRequestDto;
 import wander.wise.application.exception.custom.AiServiceException;
 
 @Service
@@ -90,6 +90,14 @@ public class AiApiServiceImpl implements AiApiService {
         String detectDistancePrompt = getDefineContinentPrompt(searchParameters, paramsJson);
         String response = chatClient.call(detectDistancePrompt);
         return (CardSearchParameters) jsonToObject(response, CardSearchParameters.class);
+    }
+
+    @Override
+    public CreateCardRequestDto defineRegionAndContinent(CreateCardRequestDto requestDto) {
+        String dtoJson = objectToJson(requestDto);
+        String defineRegionPrompt = getDefineRegionAndContinentPrompt(requestDto, dtoJson);
+        String response = chatClient.call(defineRegionPrompt);
+        return (CreateCardRequestDto) jsonToObject(response, CreateCardRequestDto.class);
     }
 
     /**
@@ -347,6 +355,33 @@ public class AiApiServiceImpl implements AiApiService {
                 .append(searchParameters.startLocation().split(",")[COUNTRY_INDEX])
                 .append(" located?, set name of this continent in travel distance ")
                 .append("field and return new object in the same format.")
+                .toString();
+    }
+
+    private static String getDefineRegionAndContinentPrompt(CreateCardRequestDto requestDto,
+                                                            String dtoJson) {
+        return new StringBuilder()
+                .append("I have this json object with search parameters: ")
+                .append(dtoJson)
+                .append(SEPARATOR)
+                .append("Find in which region(part) of ")
+                .append(requestDto.country())
+                .append(" the ")
+                .append(requestDto.populatedLocality())
+                .append(" is situated. ")
+                .append(REGION_EXAMPLES)
+                .append(SEPARATOR)
+                .append("Set name of this region in the according field.")
+                .append(SEPARATOR)
+                .append("It is important to use local name of the region. ")
+                .append("Good examples: Île-de-France, Kharkiv oblast, New York, ect.")
+                .append(SEPARATOR)
+                .append("Then ")
+                .append("Find on what continent is ")
+                .append(requestDto.country())
+                .append(" located?, set name of this continent in the according field.")
+                .append(SEPARATOR)
+                .append("Return new object in the same format.")
                 .toString();
     }
 

@@ -2,7 +2,6 @@ package wander.wise.application.service.user;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import wander.wise.application.dto.collection.CollectionDto;
-import wander.wise.application.dto.collection.CollectionWithoutCardsDto;
 import wander.wise.application.dto.comment.CommentDto;
 import wander.wise.application.dto.social.link.SocialLinkDto;
 import wander.wise.application.dto.user.UserDto;
@@ -35,6 +33,7 @@ import wander.wise.application.model.Role;
 import wander.wise.application.model.User;
 import wander.wise.application.repository.collection.CollectionRepository;
 import wander.wise.application.repository.comment.CommentRepository;
+import wander.wise.application.repository.user.deleted.DeletedRepository;
 import wander.wise.application.repository.user.pseudonym.PseudonymRepository;
 import wander.wise.application.repository.user.UserRepository;
 import wander.wise.application.security.AuthenticationService;
@@ -48,9 +47,9 @@ import static wander.wise.application.constants.GlobalConstants.RM_DIVIDER;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private static final long ROOT_ID = 1L;
-    private static final long ADMIN_ID = 2L;
-    private static final long USER_ID = 3L;
+    private static final long ROOT_ROLE_ID = 1L;
+    private static final long ADMIN_ROLE_ID = 2L;
+    private static final long USER_ROLE_ID = 3L;
     private static final String EMAIL_CONFIRM_SUBJECT = "Email confirmation";
     private static final String RESTORE_PASSWORD_SUBJECT = "New password";
     public static final int FIRST_CARD_INDEX = 0;
@@ -68,6 +67,7 @@ public class UserServiceImpl implements UserService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
     private final PseudonymRepository pseudonymRepository;
+    private final DeletedRepository deletedRepository;
 
     @Override
     @Transactional
@@ -75,6 +75,9 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(requestDto.email())) {
             throw new RegistrationException("Account with this "
                     + "email address already exists");
+        }
+        if (deletedRepository.isExistsAndDeleted(requestDto.email())) {
+            return userMapper.toDto(deletedRepository.restoreAccount(requestDto.email()));
         }
         User savedUser = userRepository.save(createAndInitializeUser(requestDto));
         createAndSaveDefaultCollections(savedUser);
@@ -126,12 +129,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Set<CommentDto> getUserComments(Long id, String email) {
-        User user = findUserAndAuthorize(id, email);
-        Set<CommentDto> userComments = commentRepository.getAllByUserEmail(email)
+        findUserAndAuthorize(id, email);
+        return commentRepository.getAllByUserEmail(email)
                 .stream()
                 .map(commentMapper::toDto)
                 .collect(Collectors.toSet());
-        return userComments;
     }
 
     @Override
@@ -148,11 +150,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto updateUserInfo(Long id, String email, UpdateUserInfoRequestDto requestDto) {
         User updatedUser = findUserAndAuthorize(id, email);
-        if (userRepository.existsByPseudonym(requestDto.pseudonym())) {
-            throw new RegistrationException("Such user already exists");
-        } else {
+        if (requestDto.pseudonym().equals(updatedUser.getPseudonym())
+                || !userRepository.existsByPseudonym(requestDto.pseudonym())) {
             return userMapper.toDto(userRepository.save(userMapper
                     .updateUserFromDto(updatedUser, requestDto)));
+        } else {
+            throw new RegistrationException("Such user already exists");
         }
     }
 
@@ -277,11 +280,11 @@ public class UserServiceImpl implements UserService {
         User newUser = userMapper.toModel(requestDto);
         if (userRepository.count() == 0) {
             newUser.setRoles(Set.of(
-                    new Role(ROOT_ID),
-                    new Role(ADMIN_ID),
-                    new Role(USER_ID)));
+                    new Role(ROOT_ROLE_ID),
+                    new Role(ADMIN_ROLE_ID),
+                    new Role(USER_ROLE_ID)));
         } else {
-            newUser.setRoles(Set.of(new Role(USER_ID)));
+            newUser.setRoles(Set.of(new Role(USER_ROLE_ID)));
         }
         newUser.setPassword(encoder.encode(newUser.getPassword()));
         newUser.setPseudonym(generatePseudonym());
