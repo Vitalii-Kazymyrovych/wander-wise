@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -424,11 +423,10 @@ public class CardServiceImpl implements CardService {
     }
 
     private List<Card> aiResponsesToCards(List<AiResponseDto> responseDtos) {
-        List<Card> generatedCards = responseDtos.stream()
+        return responseDtos.stream()
                 .map(this::initialiseCard)
                 .filter(Objects::nonNull)
                 .toList();
-        return generatedCards;
     }
 
     private Card initialiseCard(AiResponseDto aiResponseDto) {
@@ -493,6 +491,7 @@ public class CardServiceImpl implements CardService {
     }
 
     private Card initializeUsersCard(CreateCardRequestDto requestDto, User author) {
+        requestDto = aiApiService.defineRegionAndContinent(requestDto);
         Card newCard = cardMapper.toModel(requestDto);
         newCard.setAuthor(author.getPseudonym());
         LocationDto locationDto = mapsApiService.getMapsResponseByUsersUrl(newCard.getMapLink());
