@@ -20,9 +20,10 @@ public class CardDto {
     private String description;
     private Set<String> whyThisPlace;
     private Set<String> imageLinks;
-    private String mapLink;
     private int distance;
     private Long likes;
     private Set<CommentDto> comments;
+    private double latitude;
+    private double longitude;
     private boolean shown;
 }

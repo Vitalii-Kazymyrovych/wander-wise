@@ -11,7 +11,12 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MapLink {
-    String message() default "Invalid map link.";
+    String message() default """
+            Invalid map link. Valid map link should starts with 
+            https://maps.app.goo.gl/ or https://www.google.com/maps/place/. 
+            You can get it by selecting certain place on the map and copying 
+            it's url or pressing "share" button.
+            """;
     Class<?>[] groups() default {};
     Class<? extends Payload> [] payload() default {};
 }

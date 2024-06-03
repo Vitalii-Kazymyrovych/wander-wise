@@ -97,7 +97,7 @@ public class CardController {
         return cardService.createNewCard(authentication.getName(), requestDto);
     }
 
-    @PutMapping("/add-to-saved/{id}")
+    @GetMapping("/add-to-saved/{id}")
     @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = ADD_CARD_TO_SAVED_SUM, description = ADD_CARD_TO_SAVED_DESC)
     public ResponseEntity<String> addCardToSaved(@PathVariable Long id,
@@ -113,7 +113,7 @@ public class CardController {
         }
     }
 
-    @PutMapping("/remove-from-saved/{id}")
+    @GetMapping("/remove-from-saved/{id}")
     @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = REMOVE_CARD_FROM_SAVED_SUM, description = REMOVE_CARD_FROM_SAVED_DESC)
     public ResponseEntity<String> removeCardFromSaved(@PathVariable Long id,
@@ -151,7 +151,7 @@ public class CardController {
                 Arrays.stream(images).toList());
     }
 
-    @PutMapping("/post-like/{id}")
+    @GetMapping("/post-like/{id}")
     @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = POST_LIKE_TO_CARD_SUM, description = POST_LIKE_TO_CARD_DESC)
     public ResponseEntity<String> postLike(@PathVariable Long id, Authentication authentication) {
@@ -166,7 +166,7 @@ public class CardController {
         }
     }
 
-    @PutMapping("/remove-like/{id}")
+    @GetMapping("/remove-like/{id}")
     @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = REMOVE_LIKE_FROM_CARD_SUM, description = REMOVE_LIKE_FROM_CARD_DESC)
     public ResponseEntity<String> removeLike(@PathVariable Long id, Authentication authentication) {
