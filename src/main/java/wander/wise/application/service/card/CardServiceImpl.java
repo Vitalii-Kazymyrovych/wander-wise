@@ -375,7 +375,8 @@ public class CardServiceImpl implements CardService {
         List<Card> foundCards = findCards(cardSpec).stream()
                 .filter(Card::isShown)
                 .toList();
-        if (foundCards.size() < getRequiredCardsAmount(pageable)
+        int requiredAmount = getRequiredCardsAmount(pageable);
+        if (foundCards.size() < requiredAmount
                 && isAiCardsRequired(searchParams)
                 && attempts < MAX_ATTEMPTS) {
             attempts++;
@@ -390,7 +391,7 @@ public class CardServiceImpl implements CardService {
                     pageable,
                     attempts);
         }
-        if (foundCards.isEmpty()) {
+        if (foundCards.isEmpty() || foundCards.size() < requiredAmount) {
             throw new CardSearchException("Couldn't find and generate enough cards, "
                     + "that match provided requirements");
         }
@@ -415,7 +416,7 @@ public class CardServiceImpl implements CardService {
             for (Card card : generatedCards) {
                 try {
                     cardRepository.save(card);
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     System.out.println("Duplicate entity");
                 }
             }

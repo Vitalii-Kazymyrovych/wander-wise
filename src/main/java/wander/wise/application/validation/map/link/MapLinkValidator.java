@@ -7,6 +7,6 @@ public class MapLinkValidator implements ConstraintValidator<MapLink, String> {
     @Override
     public boolean isValid(String mapLink, ConstraintValidatorContext constraintValidatorContext) {
         return mapLink.startsWith("https://maps.app.goo.gl/")
-                || mapLink.startsWith("https://www.google.com/maps/");
+                || mapLink.startsWith("https://www.google.com/maps/place/");
     }
 }
