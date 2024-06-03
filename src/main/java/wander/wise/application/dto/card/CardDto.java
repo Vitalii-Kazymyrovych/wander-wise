@@ -23,6 +23,7 @@ public class CardDto {
     private int distance;
     private Long likes;
     private Set<CommentDto> comments;
+    private String mapLink;
     private double latitude;
     private double longitude;
     private boolean shown;
