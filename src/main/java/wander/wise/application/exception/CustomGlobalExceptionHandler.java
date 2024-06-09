@@ -132,7 +132,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                         exceptionName.substring(exceptionName
                                 .lastIndexOf(".") + 1),
                 exception.getMessage(),
-                exception.getStackTrace()[EXCEPTION_LOCATION_INDEX]);
+                exception.getStackTrace());
         LocalDateTime timeStamp = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIMESTAMP_FORMAT);
         ExceptionResponseDto message = new ExceptionResponseDto(
@@ -146,7 +146,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                     causeName.substring(causeName
                             .lastIndexOf(".") + 1),
                     cause.getMessage(),
-                    cause.getStackTrace()[EXCEPTION_LOCATION_INDEX]);
+                    cause.getStackTrace());
             message = message.setCause(causeDto);
         }
         return message;

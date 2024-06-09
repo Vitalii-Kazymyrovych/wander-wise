@@ -7,6 +7,16 @@ public record AiResponseDto(
         String specialRequirements,
         String description,
         String whyThisPlace) {
+    public AiResponseDto setFullName(String fullName) {
+        return new AiResponseDto(
+                fullName,
+                this.tripTypes,
+                this.climate,
+                this.specialRequirements,
+                this.description,
+                this.whyThisPlace);
+    }
+
     public AiResponseDto setTripTypes(String newTripTypes) {
         return new AiResponseDto(
                 this.fullName,
