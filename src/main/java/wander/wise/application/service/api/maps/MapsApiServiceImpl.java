@@ -123,7 +123,11 @@ public class MapsApiServiceImpl implements MapsApiService {
     }
 
     private static double corToDouble(String corString) {
-        return Math.floor(Double.parseDouble(corString) * SCALE) / SCALE;
+        if (!corString.isEmpty()) {
+            return Math.floor(Double.parseDouble(corString) * SCALE) / SCALE;
+        } else {
+            return 0;
+        }
     }
 
     private static LocationDto longUrlToLocationDto(String usersUrl, String longUrl) {

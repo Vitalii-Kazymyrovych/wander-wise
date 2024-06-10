@@ -74,11 +74,9 @@ public class ImageSearchApiServiceImpl implements ImageSearchApiService {
         SearchResults searchResults = null;
         try {
             stream = connection.getInputStream();
-            String response = new Scanner(stream)
-                    .useDelimiter("\\A").next();
+            String response = new Scanner(stream).useDelimiter("\\A").next();
             // construct result object for return
-            searchResults = new SearchResults(
-                    new HashMap<String, String>(), response);
+            searchResults = new SearchResults(new HashMap<String, String>(), response);
             // extract Bing-related HTTP headers
             Map<String, List<String>> headers = connection.getHeaderFields();
             for (String header : headers.keySet()) {
@@ -89,14 +87,14 @@ public class ImageSearchApiServiceImpl implements ImageSearchApiService {
                     searchResults.relevantHeaders.put(header, headers.get(header).get(HEADER_VALUE_INDEX));
                 }
             }
+            connection.disconnect();
             stream.close();
         } catch (IOException e) {
             throw new ImageSearchServiceException("Exception occurred when try "
                     + "to get inputStream from connection: "
                     + connection, e);
         }
-        JsonObject jsonObject = JsonParser.parseString(searchResults.jsonResponse)
-                .getAsJsonObject();
+        JsonObject jsonObject = JsonParser.parseString(searchResults.jsonResponse).getAsJsonObject();
         return jsonObject;
     }
 

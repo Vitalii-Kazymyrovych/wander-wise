@@ -10,6 +10,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +47,7 @@ import wander.wise.application.service.api.maps.MapsApiService;
 import wander.wise.application.service.api.storage.StorageService;
 import wander.wise.application.service.user.UserService;
 
+import static java.util.concurrent.Executors.newFixedThreadPool;
 import static wander.wise.application.constants.GlobalConstants.RANDOM;
 import static wander.wise.application.constants.GlobalConstants.RM_DIVIDER;
 import static wander.wise.application.constants.GlobalConstants.SEPARATOR;
@@ -51,8 +57,6 @@ import static wander.wise.application.constants.GlobalConstants.SET_DIVIDER;
 @RequiredArgsConstructor
 public class CardServiceImpl implements CardService {
     private static final double EARTH_RADIUS_KM = 6371;
-    private static final int INITIAL_ATTEMPTS = 0;
-    private static final int MAX_ATTEMPTS = 1;
     private static final int MIN_ROLES_AMOUNT = 1;
     private final AiApiService aiApiService;
     private final ImageSearchApiService imageSearchApiService;
@@ -262,15 +266,12 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @Transactional
-    public SearchCardsResponseDto search(
-            Pageable pageable,
-            CardSearchParameters searchParams) {
+    public SearchCardsResponseDto search(Pageable pageable,
+                                         CardSearchParameters searchParams) {
         searchParams = resetTravelDistance(searchParams);
         Specification<Card> cardSpec = cardSpecificationBuilder.build(searchParams);
-        List<Card> foundCards = findOrGenerateCards(searchParams, cardSpec,
-                pageable, INITIAL_ATTEMPTS);
-        LocationDto startLocationCoordinates = mapsApiService
-                .getLocationDtoByName(searchParams.startLocation());
+        List<Card> foundCards = findOrGenerateCards(searchParams, cardSpec, pageable);
+        LocationDto startLocationCoordinates = mapsApiService.getLocationDtoByName(searchParams.startLocation());
         return new SearchCardsResponseDto(pageable.getPageNumber(),
                 initializeCardDtos(foundCards, startLocationCoordinates));
     }
@@ -367,29 +368,17 @@ public class CardServiceImpl implements CardService {
         return searchParameters;
     }
 
-    private List<Card> findOrGenerateCards(
-            CardSearchParameters searchParams,
-            Specification<Card> cardSpec,
-            Pageable pageable,
-            int attempts) {
-        List<Card> foundCards = findCards(cardSpec).stream()
+    private List<Card> findOrGenerateCards(CardSearchParameters searchParams,
+                                           Specification<Card> cardSpec,
+                                           Pageable pageable) {
+        List<Card> foundCards = new ArrayList<>(findCards(cardSpec)
+                .stream()
                 .filter(Card::isShown)
-                .toList();
+                .toList());
         int requiredAmount = getRequiredCardsAmount(pageable);
-        if (foundCards.size() < requiredAmount
-                && isAiCardsRequired(searchParams)
-                && attempts < MAX_ATTEMPTS) {
-            attempts++;
-            generateAndSaveCards(
-                    searchParams,
-                    getLocationsToExcludeAndTypeMap(
-                            searchParams,
-                            foundCards));
-            return findOrGenerateCards(
-                    searchParams,
-                    cardSpec,
-                    pageable,
-                    attempts);
+        if (foundCards.size() < requiredAmount && isAiRequired(searchParams)) {
+            Map<String, List<String>> excludeMap = getExcludeMap(searchParams, foundCards);
+            foundCards.addAll(generateAndSaveCards(searchParams, excludeMap));
         }
         if (foundCards.isEmpty() || foundCards.size() < requiredAmount) {
             throw new CardSearchException("Couldn't find and generate enough cards, "
@@ -405,59 +394,41 @@ public class CardServiceImpl implements CardService {
                 .toList();
     }
 
-    private void generateAndSaveCards(
-            CardSearchParameters searchParams,
-            Map<String, List<String>> locationsToExcludeAndTypeMap) {
-        List<AiResponseDto> responseDtos = aiApiService.getAiResponses(
-                searchParams,
-                locationsToExcludeAndTypeMap);
+    @Transactional
+    private List<Card> generateAndSaveCards(CardSearchParameters searchParams,
+                                            Map<String, List<String>> excludeMap) {
+        List<AiResponseDto> responseDtos = aiApiService.getAiResponses(searchParams, excludeMap);
         List<Card> generatedCards = aiResponsesToCards(responseDtos);
+        List<Card> savedCards = new ArrayList<>();
         if (!generatedCards.isEmpty()) {
             for (Card card : generatedCards) {
-                try {
-                    cardRepository.save(card);
-                } catch (Throwable e) {
-                    System.out.println("Duplicate entity");
+                if (!cardRepository.existsByFullName(card.getFullName())) {
+                    savedCards.add(cardRepository.save(card));
                 }
             }
         }
+        return savedCards;
     }
 
     private List<Card> aiResponsesToCards(List<AiResponseDto> responseDtos) {
-        return responseDtos.stream()
-                .map(this::initialiseCard)
+        List<Future<Card>> cardFutures = new ArrayList<>();
+        List<Card> cards = new ArrayList<>();
+        ExecutorService executorService = newFixedThreadPool(responseDtos.size());
+        for (AiResponseDto responseDto : responseDtos) {
+            Future<Card> cardFuture = executorService.submit(new CardInitializer(responseDto));
+            cardFutures.add(cardFuture);
+        }
+        for (Future<Card> cardFuture : cardFutures) {
+            try {
+                cards.add(cardFuture.get());
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        executorService.shutdown();
+        return cards.stream()
                 .filter(Objects::nonNull)
                 .toList();
-    }
-
-    private Card initialiseCard(AiResponseDto aiResponseDto) {
-        String fullName = aiResponseDto.fullName();
-        if (cardRepository.existsByFullName(fullName)) {
-            return null;
-        }
-        String searchKey = getSearchKey(fullName);
-        LocationDto locationDto = mapsApiService
-                .getLocationDtoByName(searchKey);
-        if (isValidLocation(locationDto)) {
-            return fillNewCard(
-                    aiResponseDto,
-                    searchKey,
-                    locationDto);
-        }
-        return null;
-    }
-
-    private Card fillNewCard(
-            AiResponseDto aiResponseDto,
-            String searchKey,
-            LocationDto locationDto) {
-        String imageLinks = imageSearchApiService.getImageLinks(searchKey);
-        Card newCard = cardMapper.aiResponseToCard(aiResponseDto);
-        newCard.setImageLinks(imageLinks);
-        newCard.setMapLink(locationDto.mapLink());
-        newCard.setLatitude(locationDto.latitude());
-        newCard.setLongitude(locationDto.longitude());
-        return newCard;
     }
 
     private List<CardDto> initializeCardDtos(
@@ -508,19 +479,18 @@ public class CardServiceImpl implements CardService {
                 && !updatingUser.isBanned());
     }
 
-    private static Map<String, List<String>> getLocationsToExcludeAndTypeMap(
-            CardSearchParameters searchParams,
-            List<Card> foundCards) {
-        Map<String, List<String>> locationsToExcludeAndTypeMap = new HashMap<>();
+    private static Map<String, List<String>> getExcludeMap(CardSearchParameters searchParams,
+                                                           List<Card> foundCards) {
+        Map<String, List<String>> excludeMap = new HashMap<>();
         Arrays.stream(searchParams.tripTypes()).forEach(type -> {
-            locationsToExcludeAndTypeMap.put(type, new ArrayList<>());
+            excludeMap.put(type, new ArrayList<>());
             foundCards.forEach(card -> {
                 if (card.getTripTypes().contains(type)) {
-                    locationsToExcludeAndTypeMap.get(type).add(getExcludeLocationName(card));
+                    excludeMap.get(type).add(getExcludeLocationName(card));
                 }
             });
         });
-        return locationsToExcludeAndTypeMap;
+        return excludeMap;
     }
 
     private static List<Card> getPage(
@@ -538,7 +508,7 @@ public class CardServiceImpl implements CardService {
         return pageable.getPageSize() * (pageable.getPageNumber() + 1);
     }
 
-    private static boolean isAiCardsRequired(CardSearchParameters searchParams) {
+    private static boolean isAiRequired(CardSearchParameters searchParams) {
         return Arrays.toString(searchParams.author()).contains("AI");
     }
 
@@ -565,5 +535,47 @@ public class CardServiceImpl implements CardService {
     private static boolean isValidLocation(LocationDto locationDto) {
         return locationDto.latitude() != 0
                 || locationDto.longitude() != 0;
+    }
+
+    private class CardInitializer implements Callable<Card> {
+        private final AiResponseDto responseDto;
+
+        private CardInitializer(AiResponseDto responseDto) {
+            this.responseDto = responseDto;
+        }
+
+        @Override
+        public Card call() throws Exception {
+            return initialiseCard(responseDto);
+        }
+
+        private Card initialiseCard(AiResponseDto aiResponseDto) {
+            String fullName = aiResponseDto.fullName();
+            if (cardRepository.existsByFullName(fullName)) {
+                return null;
+            }
+            String searchKey = getSearchKey(fullName);
+            LocationDto locationDto = mapsApiService.getLocationDtoByName(searchKey);
+            if (isValidLocation(locationDto)) {
+                return fillNewCard(
+                        aiResponseDto,
+                        searchKey,
+                        locationDto);
+            }
+            return null;
+        }
+
+        private Card fillNewCard(
+                AiResponseDto aiResponseDto,
+                String searchKey,
+                LocationDto locationDto) {
+            String imageLinks = imageSearchApiService.getImageLinks(searchKey);
+            Card newCard = cardMapper.aiResponseToCard(aiResponseDto);
+            newCard.setImageLinks(imageLinks);
+            newCard.setMapLink(locationDto.mapLink());
+            newCard.setLatitude(locationDto.latitude());
+            newCard.setLongitude(locationDto.longitude());
+            return newCard;
+        }
     }
 }

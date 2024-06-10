@@ -1,54 +1,70 @@
 package wander.wise.application.constants;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class AiApiServiceConstants {
-    public static final String CLIMATE_LIST = "Tropical|Polar|Temperate";
-    public static final String FULL_NAME_EXAMPLES =
-            "Examples: Central park|New York|New York state|USA|North America, "
-                    + "Freedom Square|Kharkiv|Kharkiv Oblast|Ukraine|Europe, "
-                    + "Louvre|Paris|Île-de-France|France|Europe)\",";
-    public static final String FULL_NAME_RULES = "(Double check this field. "
-            + "Fill in each point. Use | between points. ";
-    public static final String FULL_NAME_TEMPLATE = "\"location name|populated locality|"
-            + "region|country|continent";
+    public static final String SPECIFIC_LOCATION_EXAMPLES = "Examples: square, museum, market, "
+            + "mall, park, certain mountain, bridge, theater, lake, "
+            + "embankment, castle etc.";
+    public static final String NON_EXISTING_RESTRICT = "It is important that"
+            + " the locations exist. "
+            + "I will be in danger if travel to non-existing location.";
     public static final String LIST_FORMATING_RULES = "Give me the list of "
             + "location. Return information as "
             + "json object. Use this format: ";
     public static final String LOCATION_NAMES_FIELD_FORMAT = "\"locationNames\": "
-            + "[\"Location name1|Populated locality|Region|Country|Continent\", "
-            + "\"Location name 2|Populated locality|Region|Country|Continent\", "
-            + "\"Location name 3|Populated locality|Region|Country|Continent\", ect.]";
-    public static final String NON_EXISTING_RESTRICT = "It is important that"
-            + " the locations exist. "
-            + "I will be in danger if travel to non-existing location.";
+            + "[Location name, Location name, Location name, ect.]";
+    public static final String FULL_NAME_FORMAT = """
+                {\
+                    "name": "Location name, that I already provided",\
+                    "populatedLocality": "Village, town or city in which 
+                    or near which the location is situated. If location 
+                    is very big for specific populated locality 
+                    (mountains, river, desert), set 
+                    here the most famous populated locality, 
+                    that situated nearby this location.",\
+                    "region": "Part of the country, in which populated 
+                    locality from previous point is situated.",\
+                    "country": "Country in which region from 
+                    previous point is situated.",\
+                    "continent": "Continent in which country 
+                    from previous point is situated."\
+                }
+                """;
+    public static final String CHECK_LOCATION_FIRST_RULE
+            = "1. Return result with empty field if the location "
+            + "is present in this list: %s";
+    public static final String CHECK_LOCATION_SECOND_RULE
+            = "2. Return result with empty field if the location doesn't exist.";
+    public static final String CHECK_LOCATION_THIRD_RULE
+            = "3. Check if the location %s exists in populated "
+            + "locality %s. If it exists in another populated "
+            + "locality, fix the mistake. Populated locality "
+            + "means city, town or village. If location is "
+            + "situated near several localities, choose one.";
+    public static final String CHECK_LOCATION_FOURTH_RULE
+            = "4. Check if populated locality %s exists in "
+            + "region %s. If it exists in another region, fix "
+            + "the mistake. By region I mean local regions: "
+            + "Kharkiv oblast, Île-de-France, etc. If "
+            + "location situated in several regions, just choose one";
+    public static final String CHECK_LOCATION_FIFTH_RULE
+            = "5. Check if region %s exists in country %s. "
+            + "If it exists in another country, fix the mistake.";
+    public static final String CHECK_LOCATION_SIXTH_RULE
+            = "6. Check if country %s exists in continent %s. "
+            + "If it exists in another continent, fix the mistake.";
+    public static final String CHECK_LOCATION_SEVENTH_RULE
+            = "7. Check if the result location exists and "
+            + "make sure, that it formatted this way: "
+            + "Location name|Populated locality|Region|Country|Continent. "
+            + "Each point should be present. Use \"|\" between points.";
+    public static final String CHECK_LOCATION_EIGHTH_RULE
+            = "Return it as json with string field \"locationName\"";
+    public static final String CLIMATE_LIST = "Tropical|Polar|Temperate";
     public static final String SPECIAL_REQUIREMENTS_LIST = "With pets|With kids|"
             + "LGBTQ friendly|Disability.";
-    public static final String SPECIFIC_LOCATION_EXAMPLES = "Examples: square, museum, market, "
-            + "mall, park, certain mountain, bridge, theater, lake, "
-            + "embankment, castle etc.";
     public static final String TRIP_TYPES_LIST = "Active|Chill|Native culture|"
             + "Family|Culture|Spiritual|Extreme|Corporate|Nature|Shopping|Romantic|Party";
-    public static final int TOTAL_REQUIRED_RESPONSES_AMOUNT = 30;
-    public static final String REMOVE_DUPLICATES_FIRST_RULE = "1. Delete locations that "
-            + "are present in the first list. Remove the "
-            + "same names and the names, that are very similar (if the first list "
-            + "is empty, skip this step).";
-    public static final String REMORE_DUPLICATES_SECOND_RULE = "2. If the location "
-            + "has several names and one of them is in the first "
-            + "list, remove this location from the second list (if the first list is "
-            + "empty, skip this step).";
-    public static final String REMOVE_DUPLICATES_THIRD_RULE = "3. Use rules above "
-            + "to also delete duplicates,"
-            + " that the second list contains.";
-    public static final String CHECK_LOCATIONS_FIRST_RULE = "1. If the location doesn't exist "
-            + "remove it from the list.";
-    public static final String CHECK_LOCATIONS_SECOND_RULE = "2. Locations are coupled with places "
-            + "in which they situated. Carefully "
-            + "check is each location really situated "
-            + "in this place. If not, fix the mistake.";
-    public static final String CHECK_LOCATIONS_THIRD_RULE = "3. Each location should match "
-            + "this format: Location name|Populated locality|Region|Country|Continent";
-    public static final String REGION_EXAMPLES = "Examples: Kharkiv oblast for Kharkiv, Ukraine; "
+    public static final String REGION_EXAMPLES
+            = "Examples: Kharkiv oblast for Kharkiv, Ukraine; "
             + "New York for New York City, USA; Île-de-France for Paris, France.";
 }
