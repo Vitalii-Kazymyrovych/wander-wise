@@ -5,5 +5,5 @@ import wander.wise.application.dto.maps.LocationDto;
 public interface MapsApiService {
     LocationDto getLocationDtoByName(String locationName);
 
-    LocationDto getMapsResponseByUsersUrl(String usersUrl);
+    LocationDto getLocationDtoByUrl(String usersUrl);
 }

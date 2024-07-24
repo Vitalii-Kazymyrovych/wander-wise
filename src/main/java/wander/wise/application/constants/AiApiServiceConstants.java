@@ -67,4 +67,10 @@ public class AiApiServiceConstants {
     public static final String REGION_EXAMPLES
             = "Examples: Kharkiv oblast for Kharkiv, Ukraine; "
             + "New York for New York City, USA; Île-de-France for Paris, France.";
+    public static final String REGION_AND_CONTINENT_DTO_EXAMPLE = """
+            {
+                "region": "Region Name", 
+                "continent": "Continent Name"
+            }
+            """;
 }

@@ -1,5 +1,6 @@
 package wander.wise.application.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -50,7 +51,7 @@ public class Card {
     private double longitude;
     private Long likes = 0L;
     private Long reports = 0L;
-    @OneToMany(mappedBy = "card", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "card", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Comment> comments = new HashSet<>();
     private boolean shown = true;
 

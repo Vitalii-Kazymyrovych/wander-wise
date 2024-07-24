@@ -14,6 +14,7 @@ import static wander.wise.application.constants.AiApiServiceConstants.FULL_NAME_
 import static wander.wise.application.constants.AiApiServiceConstants.LIST_FORMATING_RULES;
 import static wander.wise.application.constants.AiApiServiceConstants.LOCATION_NAMES_FIELD_FORMAT;
 import static wander.wise.application.constants.AiApiServiceConstants.NON_EXISTING_RESTRICT;
+import static wander.wise.application.constants.AiApiServiceConstants.REGION_AND_CONTINENT_DTO_EXAMPLE;
 import static wander.wise.application.constants.AiApiServiceConstants.REGION_EXAMPLES;
 import static wander.wise.application.constants.AiApiServiceConstants.SPECIAL_REQUIREMENTS_LIST;
 import static wander.wise.application.constants.AiApiServiceConstants.SPECIFIC_LOCATION_EXAMPLES;
@@ -44,6 +45,7 @@ import wander.wise.application.dto.ai.FullNameDto;
 import wander.wise.application.dto.ai.LocationListDto;
 import wander.wise.application.dto.card.CardSearchParameters;
 import wander.wise.application.dto.card.CreateCardRequestDto;
+import wander.wise.application.dto.card.RegionAndContinentDto;
 import wander.wise.application.exception.custom.AiServiceException;
 
 @Service
@@ -60,9 +62,7 @@ public class AiApiServiceImpl implements AiApiService {
                                               Map<String, List<String>> excludeMap) {
         List<AiResponseDto> responses = new ArrayList<>();
         generateLocations(searchParams, excludeMap, responses);
-        return responses.stream()
-                .filter(response -> checkWhereIs(searchParams, response))
-                .toList();
+        return rmExtraData(responses);
     }
 
     private void generateLocations(CardSearchParameters searchParams,
@@ -105,10 +105,16 @@ public class AiApiServiceImpl implements AiApiService {
 
     @Override
     public CreateCardRequestDto defineRegionAndContinent(CreateCardRequestDto requestDto) {
-        String dtoJson = objectToJson(requestDto);
-        String defineRegionPrompt = getDefineRegionAndContinentPrompt(requestDto, dtoJson);
-        String response = chatClient.call(defineRegionPrompt);
-        return (CreateCardRequestDto) jsonToObject(response, CreateCardRequestDto.class);
+        String defineRegionPrompt = getDefineRegionAndContinentPrompt(
+                requestDto.populatedLocality(),
+                requestDto.country());
+        RegionAndContinentDto regionAndContinentDto = (RegionAndContinentDto) jsonToObject(
+                chatClient.call(defineRegionPrompt),
+                RegionAndContinentDto.class);
+        return requestDto.setRegionAndContinent(
+                regionAndContinentDto.region(),
+                regionAndContinentDto.continent());
+
     }
 
     private static String getDefineRegionPrompt(CardSearchParameters searchParams,
@@ -145,16 +151,12 @@ public class AiApiServiceImpl implements AiApiService {
                 .toString();
     }
 
-    private static String getDefineRegionAndContinentPrompt(CreateCardRequestDto requestDto,
-                                                            String dtoJson) {
+    private static String getDefineRegionAndContinentPrompt(String populatedLocality, String country) {
         return new StringBuilder()
-                .append("I have this json object with search parameters: ")
-                .append(dtoJson)
-                .append(SEPARATOR)
                 .append("Find in which region(part) of ")
-                .append(requestDto.country())
+                .append(country)
                 .append(" the ")
-                .append(requestDto.populatedLocality())
+                .append(populatedLocality)
                 .append(" is situated. ")
                 .append(REGION_EXAMPLES)
                 .append(SEPARATOR)
@@ -165,10 +167,12 @@ public class AiApiServiceImpl implements AiApiService {
                 .append(SEPARATOR)
                 .append("Then ")
                 .append("Find on what continent is ")
-                .append(requestDto.country())
+                .append(country)
                 .append(" located?, set name of this continent in the according field.")
                 .append(SEPARATOR)
-                .append("Return new object in the same format.")
+                .append("Return a json object in this format: ")
+                .append(SEPARATOR)
+                .append(REGION_AND_CONTINENT_DTO_EXAMPLE)
                 .toString();
     }
 
@@ -209,8 +213,19 @@ public class AiApiServiceImpl implements AiApiService {
         return className;
     }
 
-    private static boolean checkWhereIs(CardSearchParameters searchParams, AiResponseDto response) {
-        return response.fullName().contains(searchParams.travelDistance()[TRAVEL_SCALE_INDEX]);
+    private static List<AiResponseDto> rmExtraData(List<AiResponseDto> responses) {
+        responses = responses.stream()
+                .map(response -> {
+                    String[] fullNameArray = response.fullName().split(RM_DIVIDER);
+                    String correctName = fullNameArray[0];
+                    if (fullNameArray[0].contains("(")) {
+                        correctName = fullNameArray[0].substring(0, fullNameArray[0].indexOf("(") - 1);
+                    }
+                    fullNameArray[0] = correctName;
+                    return response.setFullName(String.join(SET_DIVIDER, fullNameArray));
+                })
+                .toList();
+        return responses;
     }
 
     private class LocationGenerator implements Callable<List<AiResponseDto>> {

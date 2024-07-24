@@ -28,9 +28,11 @@ import wander.wise.application.mapper.CollectionMapper;
 import wander.wise.application.mapper.CommentMapper;
 import wander.wise.application.mapper.SocialLinkMapper;
 import wander.wise.application.mapper.UserMapper;
+import wander.wise.application.model.Card;
 import wander.wise.application.model.Collection;
 import wander.wise.application.model.Role;
 import wander.wise.application.model.User;
+import wander.wise.application.repository.card.CardRepository;
 import wander.wise.application.repository.collection.CollectionRepository;
 import wander.wise.application.repository.comment.CommentRepository;
 import wander.wise.application.repository.user.deleted.DeletedRepository;
@@ -68,6 +70,7 @@ public class UserServiceImpl implements UserService {
     private final CommentMapper commentMapper;
     private final PseudonymRepository pseudonymRepository;
     private final DeletedRepository deletedRepository;
+    private final CardRepository cardRepository;
 
     @Override
     @Transactional
@@ -150,8 +153,19 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto updateUserInfo(Long id, String email, UpdateUserInfoRequestDto requestDto) {
         User updatedUser = findUserAndAuthorize(id, email);
-        if (requestDto.pseudonym().equals(updatedUser.getPseudonym())
-                || !userRepository.existsByPseudonym(requestDto.pseudonym())) {
+        if (requestDto.pseudonym().equals(updatedUser.getPseudonym())) {
+            return userMapper.toDto(userRepository.save(userMapper
+                    .updateUserFromDto(updatedUser, requestDto)));
+        } else if (!userRepository.existsByPseudonym(requestDto.pseudonym())) {
+            Set<Card> savedCards = updatedUser.getCollections()
+                    .stream().filter(collection -> collection.getName().equals("Created cards"))
+                    .map(Collection::getCards)
+                    .findFirst()
+                    .get();
+            savedCards.forEach(card -> {
+                card.setAuthor(requestDto.pseudonym());
+                cardRepository.save(card);
+            });
             return userMapper.toDto(userRepository.save(userMapper
                     .updateUserFromDto(updatedUser, requestDto)));
         } else {
@@ -171,7 +185,7 @@ public class UserServiceImpl implements UserService {
                             .getProfileImage()
                             .lastIndexOf("/") + 1));
         }
-        if (userImage.getSize() == 0) {
+        if (userImage == null || userImage.getSize() == 0) {
             updatedUser.setProfileImage(null);
         } else {
             updatedUser.setProfileImage(storageService.uploadFile(userImage));
@@ -196,6 +210,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto requestUpdateUserEmail(Long id, String email,
                                           UpdateUserEmailRequestDto requestDto) {
+        if (userRepository.existsByEmail(requestDto.email())) {
+            throw new RegistrationException("Such user already exists");
+        }
         User updatedUser = findUserAndAuthorize(id, email);
         String confirmCode = sendEmailConfirmCode(requestDto.email());
         UserDto updatedUserDto = userMapper.toDto(updatedUser);
@@ -207,6 +224,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public LoginResponseDto updateUserEmail(Long id, String email,
                                             UpdateUserEmailRequestDto requestDto) {
+        if (userRepository.existsByEmail(requestDto.email())) {
+            throw new RegistrationException("Such user already exists");
+        }
         User updatedUser = findUserAndAuthorize(id, email);
         updatedUser.setEmail(requestDto.email());
         UserDto savedUser = userMapper.toDto(userRepository.save(updatedUser));
