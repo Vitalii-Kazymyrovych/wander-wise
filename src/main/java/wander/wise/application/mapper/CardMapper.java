@@ -75,8 +75,10 @@ public interface CardMapper {
 
     @Named("stringToSet")
     default Set<String> stringToSet(String field) {
-        return Arrays.stream(field.split(RM_DIVIDER))
-                .collect(Collectors.toSet());
+        if (!field.isEmpty()) {
+            return Arrays.stream(field.split(RM_DIVIDER))
+                    .collect(Collectors.toSet());
+        } else return Set.of();
     }
 
     @Named("fullNameToName")

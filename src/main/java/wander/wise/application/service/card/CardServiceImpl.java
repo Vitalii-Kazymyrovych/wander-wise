@@ -13,7 +13,6 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +27,7 @@ import wander.wise.application.dto.ai.AiResponseDto;
 import wander.wise.application.dto.card.CardDto;
 import wander.wise.application.dto.card.CardSearchParameters;
 import wander.wise.application.dto.card.CreateCardRequestDto;
+import wander.wise.application.dto.card.RegionAndContinentDto;
 import wander.wise.application.dto.card.ReportCardRequestDto;
 import wander.wise.application.dto.card.SearchCardsResponseDto;
 import wander.wise.application.dto.maps.LocationDto;
@@ -88,6 +88,14 @@ public class CardServiceImpl implements CardService {
     @Transactional
     public CardDto updateById(Long id, String email, CreateCardRequestDto requestDto) {
         Card updatedCard = findCardEntityById(id);
+        RegionAndContinentDto regionAndContinentDto = new RegionAndContinentDto(
+                updatedCard.getFullName().split(RM_DIVIDER)[2],
+                updatedCard.getFullName().split(RM_DIVIDER)[4]);
+        if (requestDto.region().isEmpty() && requestDto.continent().isEmpty()) {
+            requestDto = requestDto.setRegionAndContinent(
+                    regionAndContinentDto.region(),
+                    regionAndContinentDto.continent());
+        }
         User updatingUser = userService.findUserEntityByEmail(email);
         if (userHasAuthority(updatingUser, updatedCard)) {
             updatedCard = cardMapper.updateCardFromRequestDto(updatedCard, requestDto);
@@ -349,15 +357,27 @@ public class CardServiceImpl implements CardService {
     }
 
     private CardSearchParameters resetTravelDistance(CardSearchParameters searchParameters) {
+        String startCity = searchParameters.startLocation().split(",")[0];
+        String startCountry = searchParameters.startLocation().split(",")[1];
+        while (startCity.startsWith(" ")) {
+            startCity = startCity.substring(1);
+        }
+        while (startCity.endsWith(" ")) {
+            startCity = startCity.substring(0, startCity.length() - 1);
+        }
+        while (startCountry.startsWith(" ")) {
+            startCountry = startCountry.substring(1);
+        }
+        while (startCountry.endsWith(" ")) {
+            startCountry = startCountry.substring(0, startCountry.length() - 1);
+        }
         switch (searchParameters.travelDistance()[0]) {
             case "Populated locality" ->
                     searchParameters = searchParameters
-                            .setTravelDistance(searchParameters.startLocation()
-                                    .split(",")[0]);
+                            .setTravelDistance(startCity);
             case "Country" ->
                     searchParameters = searchParameters
-                            .setTravelDistance(searchParameters.startLocation()
-                                    .split(",")[1]);
+                            .setTravelDistance(startCountry);
             case "Region" ->
                     searchParameters = aiApiService.defineRegion(searchParameters);
             case "Continent" ->
@@ -466,7 +486,7 @@ public class CardServiceImpl implements CardService {
         requestDto = aiApiService.defineRegionAndContinent(requestDto);
         Card newCard = cardMapper.toModel(requestDto);
         newCard.setAuthor(author.getPseudonym());
-        LocationDto locationDto = mapsApiService.getMapsResponseByUsersUrl(newCard.getMapLink());
+        LocationDto locationDto = mapsApiService.getLocationDtoByUrl(newCard.getMapLink());
         newCard.setMapLink(locationDto.mapLink());
         newCard.setLatitude(locationDto.latitude());
         newCard.setLongitude(locationDto.longitude());
@@ -509,7 +529,8 @@ public class CardServiceImpl implements CardService {
     }
 
     private static boolean isAiRequired(CardSearchParameters searchParams) {
-        return Arrays.toString(searchParams.author()).contains("AI");
+        return Arrays.toString(searchParams.author()).contains("AI")
+                || searchParams.author().length == 0;
     }
 
     private static String getExcludeLocationName(Card card) {
@@ -533,8 +554,7 @@ public class CardServiceImpl implements CardService {
     }
 
     private static boolean isValidLocation(LocationDto locationDto) {
-        return locationDto.latitude() != 0
-                || locationDto.longitude() != 0;
+        return !(locationDto.latitude() == 0 && locationDto.longitude() == 0);
     }
 
     private class CardInitializer implements Callable<Card> {
@@ -556,13 +576,7 @@ public class CardServiceImpl implements CardService {
             }
             String searchKey = getSearchKey(fullName);
             LocationDto locationDto = mapsApiService.getLocationDtoByName(searchKey);
-            if (isValidLocation(locationDto)) {
-                return fillNewCard(
-                        aiResponseDto,
-                        searchKey,
-                        locationDto);
-            }
-            return null;
+            return fillNewCard(aiResponseDto, searchKey, locationDto);
         }
 
         private Card fillNewCard(

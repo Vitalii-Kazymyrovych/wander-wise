@@ -81,10 +81,9 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void deleteById(Long id, String email) {
         Comment deletedComment = findCommentEntityById(id);
-        User deletingUser = userService.findUserEntityById(id);
+        User deletingUser = userService.findUserAndAuthorize(deletedComment.getUser().getId(), email);
         if (deletingUser.getAuthorities().size() > 1
                 || deletingUser.getEmail().equals(email)) {
-            userService.findUserAndAuthorize(deletedComment.getUser().getId(), email);
             commentRepository.deleteById(id);
         } else {
             throw new AuthorizationException("Access denied. You can't "
