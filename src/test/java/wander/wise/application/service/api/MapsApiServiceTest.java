@@ -2,7 +2,7 @@ package wander.wise.application.service.api;
 
 import org.junit.jupiter.api.Test;
 
-public class MapsApiServiceImplTest {
+public class MapsApiServiceTest {
 
     // Tests for getLocationDtoByName
 

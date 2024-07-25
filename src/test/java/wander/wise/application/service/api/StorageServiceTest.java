@@ -2,7 +2,7 @@ package wander.wise.application.service.api;
 
 import org.junit.jupiter.api.Test;
 
-public class StorageServiceImplTest {
+public class StorageServiceTest {
 
     // Tests for uploadFile
 

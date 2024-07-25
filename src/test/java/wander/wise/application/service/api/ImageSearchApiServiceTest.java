@@ -2,7 +2,7 @@ package wander.wise.application.service.api;
 
 import org.junit.jupiter.api.Test;
 
-public class ImageSearchApiServiceImplTest {
+public class ImageSearchApiServiceTest {
 
     // Test method for normal search key
     @Test

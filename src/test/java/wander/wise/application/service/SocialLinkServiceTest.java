@@ -1,5 +1,7 @@
 package wander.wise.application.service;
 
+import org.junit.jupiter.api.Test;
+
 public class SocialLinkServiceTest {
 
     // Tests for save
