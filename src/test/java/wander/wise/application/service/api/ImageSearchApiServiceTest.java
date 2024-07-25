@@ -3,7 +3,7 @@ package wander.wise.application.service.api;
 import org.junit.jupiter.api.Test;
 
 public class ImageSearchApiServiceTest {
-
+/*
     // Test method for normal search key
     @Test
     public void getImageLinks_ValidSearchKey_ReturnsImageLinks() {
@@ -43,5 +43,5 @@ public class ImageSearchApiServiceTest {
     @Test
     public void getImageLinks_SearchKeyWithWhitespace_ReturnsImageLinksWithoutLeadingOrTrailingWhitespace() {
 
-    }
+    }*/
 }

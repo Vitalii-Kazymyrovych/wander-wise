@@ -6,7 +6,7 @@ public class UserServiceTest {
 
     // Tests for save
 
-    @Test
+    /*@Test
     public void save_ValidRequest_SavesUser() {
         // Test when the request is valid
     }
@@ -300,5 +300,5 @@ public class UserServiceTest {
     @Test
     public void findUserEntityByEmail_UserNotFound_ThrowsEntityNotFoundException() {
         // Test when the user is not found
-    }
+    }*/
 }

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 public class AiApiServiceTest {
 
-    // Tests for getAiResponses method
+  /*  // Tests for getAiResponses method
     @Test
     public void getAiResponses_ValidParameters_ShouldReturnResponses() {
         // Test valid parameters and ensure the correct number of responses is returned
@@ -86,5 +86,5 @@ public class AiApiServiceTest {
     @Test
     public void defineRegionAndContinent_NullRequestDto_ShouldHandleGracefully() {
         // Test null requestDto and ensure it is handled gracefully
-    }
+    }*/
 }

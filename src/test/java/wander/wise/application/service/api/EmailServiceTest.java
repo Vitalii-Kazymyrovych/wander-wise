@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 public class EmailServiceTest {
 
-    // Tests for sendEmail method
+  /*  // Tests for sendEmail method
     @Test
     public void sendEmail_ValidParameters_ShouldSendEmail() {
         // Test with valid email parameters and ensure the email is sent successfully
@@ -53,5 +53,5 @@ public class EmailServiceTest {
     @Test
     public void sendEmail_MailExceptionThrown_ShouldThrowEmailServiceException() {
         // Test when a MailException is thrown and ensure EmailServiceException is thrown
-    }
+    }*/
 }

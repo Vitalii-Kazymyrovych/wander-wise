@@ -3,7 +3,7 @@ package wander.wise.application.service;
 import org.junit.jupiter.api.Test;
 
 public class CommentServiceTest {
-
+/*
     // Tests for save
 
     @Test
@@ -80,5 +80,5 @@ public class CommentServiceTest {
     @Test
     public void deleteById_InvalidRequest_ThrowsValidationException() {
         // Test when the request is invalid
-    }
+    }*/
 }

@@ -3,7 +3,7 @@ package wander.wise.application.service;
 import org.junit.jupiter.api.Test;
 
 public class CardServiceTest {
-
+/*
     // Tests for createNewCard
 
     @Test
@@ -232,5 +232,5 @@ public class CardServiceTest {
     @Test
     public void search_NoMatchingCards_ReturnsEmptyList() {
         // Test when there are no matching cards
-    }
+    }*/
 }

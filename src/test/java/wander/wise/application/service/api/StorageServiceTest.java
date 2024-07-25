@@ -3,7 +3,7 @@ package wander.wise.application.service.api;
 import org.junit.jupiter.api.Test;
 
 public class StorageServiceTest {
-
+/*
     // Tests for uploadFile
 
     @Test
@@ -56,5 +56,5 @@ public class StorageServiceTest {
     @Test
     public void deleteFile_FileNotFound_ThrowsException() {
         // Test when the file does not exist in the S3 bucket
-    }
+    }*/
 }

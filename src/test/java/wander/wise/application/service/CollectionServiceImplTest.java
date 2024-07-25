@@ -3,7 +3,7 @@ package wander.wise.application.service;
 import org.junit.jupiter.api.Test;
 
 public class CollectionServiceImplTest {
-
+/*
     // Tests for save
 
     @Test
@@ -80,5 +80,5 @@ public class CollectionServiceImplTest {
     @Test
     public void deleteById_DeletingDefaultCollection_ThrowsAuthorizationException() {
         // Test when trying to delete a default collection
-    }
+    }*/
 }

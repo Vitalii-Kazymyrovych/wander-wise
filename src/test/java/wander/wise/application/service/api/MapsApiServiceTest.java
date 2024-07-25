@@ -3,7 +3,7 @@ package wander.wise.application.service.api;
 import org.junit.jupiter.api.Test;
 
 public class MapsApiServiceTest {
-
+/*
     // Tests for getLocationDtoByName
 
     @Test
@@ -61,5 +61,5 @@ public class MapsApiServiceTest {
     @Test
     public void getLocationDtoByUrl_ResponseParsingFailure_ThrowsException() {
         // Test when the long URL is parsed but cannot be converted to LocationDto correctly
-    }
+    }*/
 }

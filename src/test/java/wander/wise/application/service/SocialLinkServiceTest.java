@@ -3,7 +3,7 @@ package wander.wise.application.service;
 import org.junit.jupiter.api.Test;
 
 public class SocialLinkServiceTest {
-
+/*
     // Tests for save
 
     @Test
@@ -63,5 +63,5 @@ public class SocialLinkServiceTest {
     @Test
     public void deleteSocialLinkById_SocialLinkNotFound_ThrowsEntityNotFoundException() {
         // Test when the social link is not found
-    }
+    }*/
 }
