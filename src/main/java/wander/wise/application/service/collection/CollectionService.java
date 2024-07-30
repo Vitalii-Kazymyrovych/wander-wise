@@ -13,4 +13,8 @@ public interface CollectionService {
     CollectionDto updateById(Long id, String email, UpdateCollectionRequestDto requestDto);
 
     void deleteById(Long id, String email);
+
+    boolean makePublic(Long id, String email);
+
+    boolean makePrivate(Long id, String email);
 }
