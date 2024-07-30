@@ -357,6 +357,9 @@ public class CardServiceImpl implements CardService {
     }
 
     private CardSearchParameters resetTravelDistance(CardSearchParameters searchParameters) {
+        if (searchParameters.startLocation().split(",").length == 1) {
+            return searchParameters;
+        }
         String startCity = searchParameters.startLocation().split(",")[0];
         String startCountry = searchParameters.startLocation().split(",")[1];
         while (startCity.startsWith(" ")) {
@@ -373,19 +376,26 @@ public class CardServiceImpl implements CardService {
         }
         switch (searchParameters.travelDistance()[0]) {
             case "Populated locality" ->
-                    searchParameters = searchParameters
-                            .setTravelDistance(startCity);
+            {
+                return searchParameters.setTravelDistance(startCity);
+            }
             case "Country" ->
-                    searchParameters = searchParameters
-                            .setTravelDistance(startCountry);
+            {
+                return searchParameters.setTravelDistance(startCountry);
+            }
             case "Region" ->
-                    searchParameters = aiApiService.defineRegion(searchParameters);
+            {
+                return aiApiService.defineRegion(searchParameters);
+            }
             case "Continent" ->
-                    searchParameters = aiApiService.defineContinent(searchParameters);
+            {
+                return aiApiService.defineContinent(searchParameters);
+            }
             default ->
-                    searchParameters = searchParameters.setTravelDistance("");
+            {
+                return searchParameters;
+            }
         }
-        return searchParameters;
     }
 
     private List<Card> findOrGenerateCards(CardSearchParameters searchParams,

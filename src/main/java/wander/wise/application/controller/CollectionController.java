@@ -63,6 +63,30 @@ public class CollectionController {
         return collectionService.updateById(id, authentication.getName(), requestDto);
     }
 
+    @GetMapping("/{id}/make-public")
+    @PreAuthorize("hasAuthority('USER')")
+    @Operation(summary = "", description = "")
+    public ResponseEntity<String> makePublic(@PathVariable Long id,
+                                             Authentication authentication) {
+        if (collectionService.makePublic(id, authentication.getName())) {
+            return new ResponseEntity<>("Collection was made public", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Denied. Collection is already public", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{id}/make-private")
+    @PreAuthorize("hasAuthority('USER')")
+    @Operation(summary = "", description = "")
+    public ResponseEntity<String> makePrivate(@PathVariable Long id,
+                                             Authentication authentication) {
+        if (collectionService.makePrivate(id, authentication.getName())) {
+            return new ResponseEntity<>("Collection was made private", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Denied. Collection is already private", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = DELETE_COLLECTION_BY_ID_SUM, description = DELETE_COLLECTION_BY_ID_DESC)

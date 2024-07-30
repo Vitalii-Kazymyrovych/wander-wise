@@ -2,6 +2,8 @@ package wander.wise.application.mapper;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -20,6 +22,11 @@ public interface CollectionMapper {
     @Mapping(target = "author", source = "user", qualifiedByName = "userToAuthor")
     @Mapping(target = "cardDtos", source = "cards", qualifiedByName = "cardsToCardDtos")
     CollectionDto toDto(Collection collection);
+
+    @AfterMapping
+    default void afterMappingToDto(@MappingTarget CollectionDto collectionDto, Collection collection) {
+        collectionDto.setPublic(collection.isPublic());
+    }
 
     @Mapping(target = "author", source = "user", qualifiedByName = "userToAuthor")
     CollectionWithoutCardsDto toCollectionWithoutCardsDto(Collection collection);

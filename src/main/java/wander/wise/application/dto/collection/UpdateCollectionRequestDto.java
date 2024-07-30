@@ -6,6 +6,5 @@ import java.util.Set;
 
 public record UpdateCollectionRequestDto(
         @NotBlank String name,
-        @NotNull Set<Long> cardIds,
-        @NotNull boolean isPublic) {
+        @NotNull Set<Long> cardIds) {
 }
