@@ -512,7 +512,7 @@ public class CardServiceImpl implements CardService {
     private static Map<String, List<String>> getExcludeMap(CardSearchParameters searchParams,
                                                            List<Card> foundCards) {
         Map<String, List<String>> excludeMap = new HashMap<>();
-        Arrays.stream(searchParams.tripTypes()).forEach(type -> {
+        searchParams.tripTypes().forEach(type -> {
             excludeMap.put(type, new ArrayList<>());
             foundCards.forEach(card -> {
                 if (card.getTripTypes().contains(type)) {

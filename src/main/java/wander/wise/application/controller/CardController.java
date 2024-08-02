@@ -43,6 +43,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,7 +71,7 @@ public class CardController {
 
     @PostMapping("/search")
     @Operation(summary = SEARCH_CARDS_SUM, description = SEARCH_CARDS_DESC)
-    public SearchCardsResponseDto search(@RequestBody CardSearchParameters searchParameters,
+    public SearchCardsResponseDto search(@RequestBody @Validated CardSearchParameters searchParameters,
                                          Pageable pageable) {
         return cardService.search(pageable, searchParameters);
     }
