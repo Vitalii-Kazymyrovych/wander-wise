@@ -88,5 +88,4 @@ public class AuthenticationController {
         authenticationService.logout(token, authentication.getName());
         return new ResponseEntity<>("Success logout.", HttpStatus.OK);
     }
-
 }

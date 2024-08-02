@@ -65,28 +65,6 @@ public class AiApiServiceImpl implements AiApiService {
         return rmExtraData(responses);
     }
 
-    private void generateLocations(CardSearchParameters searchParams,
-                                   Map<String, List<String>> excludeMap,
-                                   List<AiResponseDto> responses) {
-        String excludeTotal = getExcludeTotal(excludeMap);
-        List<Future<List<AiResponseDto>>> futures = new ArrayList<>();
-        ExecutorService executorService = newFixedThreadPool(excludeMap.keySet().size());
-        excludeMap.keySet().forEach(type -> {
-            Future<List<AiResponseDto>> responsesByType
-                    = executorService.submit(new LocationGenerator(
-                    excludeMap, type, searchParams, excludeTotal));
-            futures.add(responsesByType);
-        });
-        for (Future<List<AiResponseDto>> future : futures) {
-            try {
-                responses.addAll(future.get());
-            } catch (InterruptedException | ExecutionException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        executorService.shutdown();
-    }
-
     @Override
     public CardSearchParameters defineRegion(CardSearchParameters searchParams) {
         String paramsJson = objectToJson(searchParams);
@@ -115,6 +93,28 @@ public class AiApiServiceImpl implements AiApiService {
                 regionAndContinentDto.region(),
                 regionAndContinentDto.continent());
 
+    }
+
+    private void generateLocations(CardSearchParameters searchParams,
+                                   Map<String, List<String>> excludeMap,
+                                   List<AiResponseDto> responses) {
+        String excludeTotal = getExcludeTotal(excludeMap);
+        List<Future<List<AiResponseDto>>> futures = new ArrayList<>();
+        ExecutorService executorService = newFixedThreadPool(excludeMap.keySet().size());
+        excludeMap.keySet().forEach(type -> {
+            Future<List<AiResponseDto>> responsesByType
+                    = executorService.submit(new LocationGenerator(
+                    excludeMap, type, searchParams, excludeTotal));
+            futures.add(responsesByType);
+        });
+        for (Future<List<AiResponseDto>> future : futures) {
+            try {
+                responses.addAll(future.get());
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        executorService.shutdown();
     }
 
     private static String getDefineRegionPrompt(CardSearchParameters searchParams,
