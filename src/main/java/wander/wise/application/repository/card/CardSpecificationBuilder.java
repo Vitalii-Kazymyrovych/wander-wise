@@ -16,10 +16,10 @@ public class CardSpecificationBuilder implements SpecificationBuilder<Card, Card
     @Override
     public Specification<Card> build(CardSearchParameters searchParameters) {
         Specification<Card> spec = Specification.where(null);
-        if (notEmpty(searchParameters.tripTypes())) {
+        if (notEmpty(searchParameters.tripTypes().toArray(new String[0]))) {
             spec = spec.and(cardSpecificationProviderManager
                     .getSpecificationProvider("tripTypes")
-                    .getSpecification(searchParameters.tripTypes()));
+                    .getSpecification(searchParameters.tripTypes().toArray(new String[0])));
         }
         if (notEmpty(searchParameters.climate())) {
             spec = spec.and(cardSpecificationProviderManager
