@@ -87,15 +87,8 @@ public class CardServiceImpl implements CardService {
     @Override
     @Transactional
     public CardDto updateById(Long id, String email, CreateCardRequestDto requestDto) {
+        requestDto = aiApiService.defineRegionAndContinent(requestDto);
         Card updatedCard = findCardEntityById(id);
-        RegionAndContinentDto regionAndContinentDto = new RegionAndContinentDto(
-                updatedCard.getFullName().split(RM_DIVIDER)[2],
-                updatedCard.getFullName().split(RM_DIVIDER)[4]);
-        if (requestDto.region().isEmpty() && requestDto.continent().isEmpty()) {
-            requestDto = requestDto.setRegionAndContinent(
-                    regionAndContinentDto.region(),
-                    regionAndContinentDto.continent());
-        }
         User updatingUser = userService.findUserEntityByEmail(email);
         if (userHasAuthority(updatingUser, updatedCard)) {
             updatedCard = cardMapper.updateCardFromRequestDto(updatedCard, requestDto);
