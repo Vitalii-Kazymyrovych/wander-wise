@@ -6,16 +6,21 @@ import static wander.wise.application.constants.GlobalConstants.JSON_MAPPER;
 import static wander.wise.application.constants.GlobalConstants.SEPARATOR;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.stereotype.Service;
 import wander.wise.application.dto.ai.AiResponseDto;
+import wander.wise.application.dto.ai.LocationListDto;
 import wander.wise.application.dto.card.CardSearchParameters;
 import wander.wise.application.dto.card.CreateCardRequestDto;
 import wander.wise.application.dto.card.RegionAndContinentDto;
 import wander.wise.application.exception.custom.AiServiceException;
+
+import javax.xml.stream.Location;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +35,22 @@ public class AiApiServiceImpl implements AiApiService {
     @Override
     public List<AiResponseDto> getAiResponses(CardSearchParameters searchParameters,
                                               Map<String, List<String>> locationsToExcludeAndTypeMap) {
-        return List.of();
+        LocalDateTime ldt = LocalDateTime.now();
+        String response = chatClient.call(
+                "Give me a complete list of administrative units of"
+                        + searchParameters.travelDistance()[0]
+                        + " as of " + ldt.getYear() + ". I need only units inside the "
+                        + searchParameters.travelDistance()[0]
+                        + ". Return result list in json format. Use this template: "
+                        + """
+                        {
+                          "locationNames": ["Unit 1", "Unit 2"]
+                        }                     \s
+                       \s""");
+        LocationListDto ld = (LocationListDto) jsonToObject(response, LocationListDto.class);
+        return ld.locationNames().stream().map(l -> {
+            return new AiResponseDto(l, null, null, null, null, null);
+        }).toList();
     }
 
     @Override

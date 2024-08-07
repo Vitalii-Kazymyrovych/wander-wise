@@ -1,6 +1,12 @@
 package wander.wise.application.service.api;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import wander.wise.application.dto.ai.AiResponseDto;
+import wander.wise.application.service.api.ai.AiApiService;
+
+import java.util.List;
 
 public class AiApiServiceTest {
 
