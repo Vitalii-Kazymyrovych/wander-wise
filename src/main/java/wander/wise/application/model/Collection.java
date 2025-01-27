@@ -14,15 +14,16 @@ import jakarta.persistence.Table;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 import org.hibernate.annotations.SoftDelete;
 
 @Entity
 @Table(name = "collections")
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
 @RequiredArgsConstructor
 @SoftDelete
 public class Collection {

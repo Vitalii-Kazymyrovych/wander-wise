@@ -13,9 +13,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 import org.hibernate.annotations.SoftDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +24,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "users")
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
 @RequiredArgsConstructor
 @SoftDelete
 public class User implements UserDetails {
