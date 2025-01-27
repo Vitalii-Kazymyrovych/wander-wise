@@ -12,9 +12,8 @@ import jakarta.persistence.Table;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 import org.hibernate.annotations.SoftDelete;
 
 @Entity
@@ -22,7 +21,9 @@ import org.hibernate.annotations.SoftDelete;
 @Setter
 @Getter
 @RequiredArgsConstructor
+@AllArgsConstructor
 @SoftDelete
+@Builder
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
