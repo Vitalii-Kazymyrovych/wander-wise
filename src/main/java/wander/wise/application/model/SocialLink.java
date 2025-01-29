@@ -7,15 +7,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.SoftDelete;
 
 @Entity
 @Table(name = "social_links")
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
 @RequiredArgsConstructor
 @SoftDelete
 public class SocialLink {
