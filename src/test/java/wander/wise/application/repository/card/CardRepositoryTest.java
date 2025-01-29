@@ -1,4 +1,4 @@
-package wander.wise.application.repository;
+package wander.wise.application.repository.card;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,7 +8,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import wander.wise.application.model.Card;
-import wander.wise.application.repository.card.CardRepository;
+
 import java.util.List;
 
 @DataJpaTest
