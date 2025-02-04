@@ -1,84 +1,119 @@
 package wander.wise.application.service;
 
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Value;
+import wander.wise.application.dto.comment.CommentDto;
+import wander.wise.application.dto.comment.CreateCommentRequestDto;
+import wander.wise.application.dto.comment.ReportCommentRequestDto;
+import wander.wise.application.mapper.CommentMapper;
+import wander.wise.application.model.Comment;
+import wander.wise.application.model.User;
+import wander.wise.application.repository.comment.CommentRepository;
+import wander.wise.application.service.api.email.EmailService;
+import wander.wise.application.service.comment.CommentServiceImpl;
+import wander.wise.application.service.user.UserService;
 
+import java.util.Collection;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
 public class CommentServiceTest {
-/*
-    // Tests for save
+    private String email;
+    private Long id;
+    private CreateCommentRequestDto createCommentRequestDto;
+    private CommentDto commentDto;
+    private Comment comment;
+    private User user;
+    private ReportCommentRequestDto reportCommentRequestDto;
+    private Collection collection;
+    @Value("${support.mail.address}")
+    private String supportEmail;
+    @Mock
+    private CommentRepository commentRepository;
+    @Mock
+    private UserService userService;
+    @Mock
+    private CommentMapper commentMapper;
+    @Mock
+    private EmailService emailService;
+    @InjectMocks
+    private CommentServiceImpl commentService;
 
-    @Test
-    public void save_ValidRequest_SavesComment() {
-        // Test when the request is valid and the user is not banned
+    @BeforeEach
+    public void setUp() {
+        email = "email";
+        id = 1L;
+        createCommentRequestDto = mock(CreateCommentRequestDto.class);
+        commentDto = mock(CommentDto.class);
+        user = mock(User.class);
+        comment = mock(Comment.class);
+        reportCommentRequestDto = mock(ReportCommentRequestDto.class);
+        collection = mock(Collection.class);
     }
 
     @Test
-    public void save_UserIsBanned_ThrowsAuthorizationException() {
-        // Test when the user is banned
+    public void save_ValidData_ReturnsCommentDto() {
+        when(userService.findUserEntityByEmail(anyString())).thenReturn(user);
+        when(commentMapper.toModel(any(CreateCommentRequestDto.class))).thenReturn(comment);
+        when(commentRepository.save(any(Comment.class))).thenReturn(comment);
+        when(commentMapper.toDto(any(Comment.class))).thenReturn(commentDto);
+
+        CommentDto actual = commentService.save(email, createCommentRequestDto);
+
+        Assertions.assertThat(actual).isNotNull();
     }
 
     @Test
-    public void save_InvalidRequest_ThrowsValidationException() {
-        // Test when the request is invalid
-    }
+    public void update_ValidData_ReturnsCommentDto() {
+        when(commentRepository.findById(anyLong())).thenReturn(Optional.of(comment));
+        when(comment.getUser()).thenReturn(user);
+        when(user.getId()).thenReturn(id);
+        when(userService.findUserAndAuthorize(anyLong(), anyString())).thenReturn(user);
+        when(commentMapper.updateCommentFromDto(
+                any(Comment.class),
+                any(CreateCommentRequestDto.class))).thenReturn(comment);
+        when(commentRepository.save(any(Comment.class))).thenReturn(comment);
+        when(commentMapper.toDto(any(Comment.class))).thenReturn(commentDto);
 
-    // Tests for update
+        CommentDto actual = commentService.update(id, email, createCommentRequestDto);
 
-    @Test
-    public void update_ValidRequest_UpdatesComment() {
-        // Test when the request is valid and the user has authority
-    }
-
-    @Test
-    public void update_UserHasNoAuthority_ThrowsAuthorizationException() {
-        // Test when the user has no authority
-    }
-
-    @Test
-    public void update_CommentNotFound_ThrowsEntityNotFoundException() {
-        // Test when the comment is not found
+        Assertions.assertThat(actual).isNotNull();
     }
 
     @Test
-    public void update_InvalidRequest_ThrowsValidationException() {
-        // Test when the request is invalid
-    }
+    public void report_ValidData_ReturnsNothing() {
+        when(commentRepository.findById(anyLong())).thenReturn(Optional.of(comment));
+        when(comment.getReports()).thenReturn(id);
+        when(comment.getId()).thenReturn(id);
+        when(reportCommentRequestDto.commentAuthor()).thenReturn(email);
+        when(reportCommentRequestDto.commentText()).thenReturn(email);
+        when(reportCommentRequestDto.reportText()).thenReturn(email);
+        doNothing().when(emailService).sendEmail(eq(supportEmail), anyString(), anyString());
+        when(commentRepository.save(any(Comment.class))).thenReturn(comment);
 
-    // Tests for report
-
-    @Test
-    public void report_ValidRequest_ReportsComment() {
-        // Test when the request is valid
-    }
-
-    @Test
-    public void report_CommentNotFound_ThrowsEntityNotFoundException() {
-        // Test when the comment is not found
+        assertAll(() -> commentService.report(id, email, reportCommentRequestDto));
     }
 
     @Test
-    public void report_InvalidRequest_ThrowsValidationException() {
-        // Test when the request is invalid
+    public void deleteById_ValidData_ReturnsNothing() {
+        when(commentRepository.findById(anyLong())).thenReturn(Optional.of(comment));
+        when(comment.getUser()).thenReturn(user);
+        when(user.getId()).thenReturn(id);
+        when(userService.findUserAndAuthorize(anyLong(), anyString())).thenReturn(user);
+        when(user.getAuthorities()).thenReturn(collection);
+        when(collection.size()).thenReturn(2);
+        doNothing().when(commentRepository).deleteById(anyLong());
+
+        assertAll(() -> commentService.deleteById(id, email));
     }
-
-    // Tests for deleteById
-
-    @Test
-    public void deleteById_ValidRequest_DeletesComment() {
-        // Test when the request is valid and the user has authority
-    }
-
-    @Test
-    public void deleteById_UserHasNoAuthority_ThrowsAuthorizationException() {
-        // Test when the user has no authority
-    }
-
-    @Test
-    public void deleteById_CommentNotFound_ThrowsEntityNotFoundException() {
-        // Test when the comment is not found
-    }
-
-    @Test
-    public void deleteById_InvalidRequest_ThrowsValidationException() {
-        // Test when the request is invalid
-    }*/
 }
