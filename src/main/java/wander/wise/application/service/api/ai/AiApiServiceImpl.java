@@ -19,7 +19,6 @@ import static wander.wise.application.constants.AiApiServiceConstants.REGION_EXA
 import static wander.wise.application.constants.AiApiServiceConstants.SPECIAL_REQUIREMENTS_LIST;
 import static wander.wise.application.constants.AiApiServiceConstants.SPECIFIC_LOCATION_EXAMPLES;
 import static wander.wise.application.constants.AiApiServiceConstants.TRIP_TYPES_LIST;
-import static wander.wise.application.constants.GlobalConstants.JSON_MAPPER;
 import static wander.wise.application.constants.GlobalConstants.RM_DIVIDER;
 import static wander.wise.application.constants.GlobalConstants.SEPARATOR;
 import static wander.wise.application.constants.GlobalConstants.SET_DIVIDER;
@@ -36,6 +35,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,7 @@ public class AiApiServiceImpl implements AiApiService {
     private static final int POPULATED_LOCALITY_INDEX = 0;
     private static final int COUNTRY_INDEX = 1;
     private final ChatClient chatClient;
+    private final ObjectMapper objectMapper;
 
     @Override
     public List<AiResponseDto> getAiResponses(CardSearchParameters searchParams,
@@ -183,10 +185,10 @@ public class AiApiServiceImpl implements AiApiService {
                 .collect(Collectors.joining(", "));
     }
 
-    private static String objectToJson(Object object) {
+    private String objectToJson(Object object) {
         String paramsJson = null;
         try {
-            paramsJson = JSON_MAPPER.writeValueAsString(object);
+            paramsJson = objectMapper.writeValueAsString(object);
         } catch (IOException e) {
             String className = getClassName(object.getClass());
             throw new AiServiceException(
@@ -195,9 +197,9 @@ public class AiApiServiceImpl implements AiApiService {
         return paramsJson;
     }
 
-    private static Object jsonToObject(String json, Class clazz) {
+    private Object jsonToObject(String json, Class clazz) {
         try {
-            return JSON_MAPPER.readValue(json, clazz);
+            return objectMapper.readValue(json, clazz);
         } catch (IOException e) {
             String className = getClassName(clazz);
             throw new AiServiceException(

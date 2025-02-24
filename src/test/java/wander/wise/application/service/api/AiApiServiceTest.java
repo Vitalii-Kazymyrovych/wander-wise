@@ -1,90 +1,156 @@
 package wander.wise.application.service.api;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.ai.chat.ChatClient;
+import org.testcontainers.shaded.org.checkerframework.checker.units.qual.A;
+import wander.wise.application.dto.ai.AiResponseDto;
+import wander.wise.application.dto.ai.CheckedLocation;
+import wander.wise.application.dto.ai.FullNameDto;
+import wander.wise.application.dto.ai.LocationListDto;
+import wander.wise.application.dto.card.CardSearchParameters;
+import wander.wise.application.dto.card.CreateCardRequestDto;
+import wander.wise.application.dto.card.RegionAndContinentDto;
+import wander.wise.application.service.api.ai.AiApiService;
+import wander.wise.application.service.api.ai.AiApiServiceImpl;
 
+import java.io.IOException;
+import java.sql.Struct;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.mockito.Mockito.*;
+import static wander.wise.application.constants.GlobalConstants.SET_DIVIDER;
+
+@ExtendWith(MockitoExtension.class)
 public class AiApiServiceTest {
+    private static String excludeTotal = "place1, place2";
+    String emptyString = "";
+    String startLocation = "Loc1,Loc2";
+    String[] stringArr = new String[]{"", "", };
+    @InjectMocks
+    private AiApiServiceImpl aiApiService;
+    @Mock
+    ChatClient chatClient;
+    @Mock
+    ObjectMapper objectMapper;
+    Random random = new Random();
 
-  /*  // Tests for getAiResponses method
     @Test
-    public void getAiResponses_ValidParameters_ShouldReturnResponses() {
-        // Test valid parameters and ensure the correct number of responses is returned
+    public void getAiResponses_ValidData_ReturnsAiResponseDtoList() throws JsonProcessingException {
+        AiResponseDto responseDto = mock(AiResponseDto.class);
+        CardSearchParameters searchParameters = mock(CardSearchParameters.class);
+        Map excludeMap = mock(Map.class);
+        List excludeByTypeList = mock(List.class);
+        Set<String> keySet = Set.of("active", "romantic");
+        LocationListDto listDto = mock(LocationListDto.class);
+        Set<String> locationNames = Set.of(
+                "place3|place3|place3|place3|place3",
+                "place4|place3|place3|place3|place3",
+                "place5|place3|place3|place3|place3");
+        FullNameDto fullNameDto = mock(FullNameDto.class);
+        CheckedLocation checkedLocation = mock(CheckedLocation.class);
+        AiResponseDto aiResponseDto = new AiResponseDto(
+                "", "", "",
+                "", "", "");
+
+        //Extract exclude total from excludeMap
+        Collection values = mock(Collection.class);
+        Stream stream = mock(Stream.class);
+        when(excludeMap.values()).thenReturn(values);
+        when(values.stream()).thenReturn(stream);
+        when(stream.flatMap(any())).thenReturn(stream);
+        when(stream.collect(any())).thenReturn(excludeTotal);
+
+        //Extract keySet from excludeMap to iterate through
+        when(excludeMap.keySet()).thenReturn(keySet);
+
+        //Extract exclude by type string from excludeMap
+        when(excludeMap.get(anyString())).thenReturn(excludeByTypeList);
+        when(excludeByTypeList.toString()).thenReturn(excludeTotal);
+
+        //Get location list prompt
+        when(excludeMap.size()).thenReturn(2);
+        when(searchParameters.startLocation()).thenReturn(emptyString);
+        when(searchParameters.climate()).thenReturn(stringArr);
+        when(searchParameters.specialRequirements()).thenReturn(stringArr);
+        when(searchParameters.travelDistance()).thenReturn(stringArr);
+
+        //Generate location list
+        when(chatClient.call(anyString())).thenReturn(emptyString);
+        when(objectMapper.readValue(anyString(), eq(LocationListDto.class))).thenReturn(listDto);
+        when(listDto.locationNames()).thenReturn(locationNames);
+
+        //Generate location full names
+        when(objectMapper.readValue(anyString(), eq(FullNameDto.class))).thenReturn(fullNameDto);
+        when(fullNameDto.name()).thenReturn(emptyString);
+        when(fullNameDto.populatedLocality()).thenReturn(emptyString);
+        when(fullNameDto.region()).thenReturn(emptyString);
+        when(fullNameDto.country()).thenReturn(emptyString);
+        when(fullNameDto.continent()).thenReturn(emptyString);
+        when(objectMapper.writeValueAsString(any(LocationListDto.class))).thenReturn(emptyString);
+
+        //Check locations
+        when(objectMapper.readValue(anyString(), eq(CheckedLocation.class))).thenReturn(checkedLocation);
+        when(checkedLocation.locationName()).thenReturn("");
+
+        //Get location details
+        when(objectMapper.readValue(anyString(), eq(AiResponseDto.class))).thenReturn(aiResponseDto);
+
+        List<AiResponseDto> responseDtos = aiApiService
+                .getAiResponses(searchParameters, excludeMap);
+
+        Assertions.assertThat(responseDtos).isNotNull();
+        Assertions.assertThat(responseDtos.size()).isGreaterThan(1);
     }
 
     @Test
-    public void getAiResponses_EmptyExcludeMap_ShouldReturnResponses() {
-        // Test empty excludeMap and ensure responses are generated correctly
+    public void defineRegion_ValidData_ReturnsCardSearchParameters() throws IOException {
+        CardSearchParameters searchParameters = mock(CardSearchParameters.class);
+        when(objectMapper.writeValueAsString(searchParameters)).thenReturn(emptyString);
+        when(searchParameters.startLocation()).thenReturn(startLocation);
+        when(chatClient.call(anyString())).thenReturn(emptyString);
+        when(objectMapper.readValue(anyString(), eq(CardSearchParameters.class))).thenReturn(searchParameters);
+
+        CardSearchParameters actual = aiApiService.defineRegion(searchParameters);
+        Assertions.assertThat(actual).isNotNull();
     }
 
     @Test
-    public void getAiResponses_NullExcludeMap_ShouldHandleGracefully() {
-        // Test null excludeMap and ensure it is handled gracefully
+    public void defineContinent_ValidData_ReturnsCardSearchParameters() throws IOException {
+        CardSearchParameters searchParameters = mock(CardSearchParameters.class);
+        when(objectMapper.writeValueAsString(searchParameters)).thenReturn(emptyString);
+        when(searchParameters.startLocation()).thenReturn(startLocation);
+        when(chatClient.call(anyString())).thenReturn(emptyString);
+        when(objectMapper.readValue(anyString(), eq(CardSearchParameters.class))).thenReturn(searchParameters);
+
+        CardSearchParameters actual = aiApiService.defineContinent(searchParameters);
+        Assertions.assertThat(actual).isNotNull();
     }
 
     @Test
-    public void getAiResponses_EmptySearchParams_ShouldReturnEmptyList() {
-        // Test empty searchParams and ensure an empty list is returned
-    }
+    public void defineRegionAndContinent_ValidData_ReturnsCreateCardRequestDto() throws JsonProcessingException {
+        CreateCardRequestDto requestDto = mock(CreateCardRequestDto.class);
+        RegionAndContinentDto regionAndContinentDto = mock(RegionAndContinentDto.class);
+        when(requestDto.populatedLocality()).thenReturn(emptyString);
+        when(requestDto.country()).thenReturn(emptyString);
+        when(chatClient.call(anyString())).thenReturn(emptyString);
+        when(objectMapper.readValue(anyString(), eq(RegionAndContinentDto.class))).thenReturn(regionAndContinentDto);
+        when(regionAndContinentDto.region()).thenReturn(emptyString);
+        when(regionAndContinentDto.continent()).thenReturn(emptyString);
+        when(requestDto.setRegionAndContinent(anyString(), anyString())).thenReturn(requestDto);
 
-    @Test
-    public void getAiResponses_NullSearchParams_ShouldHandleGracefully() {
-        // Test null searchParams and ensure it is handled gracefully
+        CreateCardRequestDto actual = aiApiService.defineRegionAndContinent(requestDto);
+        Assertions.assertThat(actual).isNotNull();
     }
-
-    // Tests for defineRegion method
-    @Test
-    public void defineRegion_ValidParameters_ShouldReturnRegion() {
-        // Test valid parameters and ensure the correct region is returned
-    }
-
-    @Test
-    public void defineRegion_InvalidJsonResponse_ShouldHandleGracefully() {
-        // Test invalid JSON response from chatClient and ensure it is handled gracefully
-    }
-
-    @Test
-    public void defineRegion_EmptySearchParams_ShouldReturnDefaultRegion() {
-        // Test empty searchParams and ensure a default region is returned
-    }
-
-    @Test
-    public void defineRegion_NullSearchParams_ShouldHandleGracefully() {
-        // Test null searchParams and ensure it is handled gracefully
-    }
-
-    // Tests for defineContinent method
-    @Test
-    public void defineContinent_ValidParameters_ShouldReturnContinent() {
-        // Test valid parameters and ensure the correct continent is returned
-    }
-
-    @Test
-    public void defineContinent_InvalidJsonResponse_ShouldHandleGracefully() {
-        // Test invalid JSON response from chatClient and ensure it is handled gracefully
-    }
-
-    @Test
-    public void defineContinent_EmptySearchParams_ShouldReturnDefaultContinent() {
-        // Test empty searchParams and ensure a default continent is returned
-    }
-
-    @Test
-    public void defineContinent_NullSearchParams_ShouldHandleGracefully() {
-        // Test null searchParams and ensure it is handled gracefully
-    }
-
-    // Tests for defineRegionAndContinent method
-    @Test
-    public void defineRegionAndContinent_ValidRequestDto_ShouldReturnUpdatedDto() {
-        // Test valid requestDto and ensure the correct updated DTO is returned
-    }
-
-    @Test
-    public void defineRegionAndContinent_InvalidJsonResponse_ShouldHandleGracefully() {
-        // Test invalid JSON response from chatClient and ensure it is handled gracefully
-    }
-
-    @Test
-    public void defineRegionAndContinent_NullRequestDto_ShouldHandleGracefully() {
-        // Test null requestDto and ensure it is handled gracefully
-    }*/
 }
