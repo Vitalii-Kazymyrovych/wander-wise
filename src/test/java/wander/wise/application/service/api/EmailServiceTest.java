@@ -1,57 +1,27 @@
 package wander.wise.application.service.api;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import wander.wise.application.service.api.email.EmailServiceImpl;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
 public class EmailServiceTest {
+    @InjectMocks
+    private EmailServiceImpl emailService;
+    @Mock
+    private JavaMailSender javaMailSender;
 
-  /*  // Tests for sendEmail method
     @Test
-    public void sendEmail_ValidParameters_ShouldSendEmail() {
-        // Test with valid email parameters and ensure the email is sent successfully
+    public void sendEmail_ValidData_ReturnsNothing() {
+        doNothing().when(javaMailSender).send(any(SimpleMailMessage.class));
+        assertAll(() -> emailService.sendEmail("", "", ""));
     }
-
-    @Test
-    public void sendEmail_NullToEmail_ShouldThrowException() {
-        // Test with null toEmail and ensure an appropriate exception is thrown
-    }
-
-    @Test
-    public void sendEmail_EmptyToEmail_ShouldThrowException() {
-        // Test with empty toEmail and ensure an appropriate exception is thrown
-    }
-
-    @Test
-    public void sendEmail_NullSubject_ShouldSendEmail() {
-        // Test with null subject and ensure the email is sent successfully
-    }
-
-    @Test
-    public void sendEmail_EmptySubject_ShouldSendEmail() {
-        // Test with empty subject and ensure the email is sent successfully
-    }
-
-    @Test
-    public void sendEmail_NullBody_ShouldSendEmail() {
-        // Test with null body and ensure the email is sent successfully
-    }
-
-    @Test
-    public void sendEmail_EmptyBody_ShouldSendEmail() {
-        // Test with empty body and ensure the email is sent successfully
-    }
-
-    @Test
-    public void sendEmail_InvalidFromEmail_ShouldThrowException() {
-        // Test with invalid fromEmail and ensure an appropriate exception is thrown
-    }
-
-    @Test
-    public void sendEmail_MailServerUnavailable_ShouldThrowException() {
-        // Test when mail server is unavailable and ensure an appropriate exception is thrown
-    }
-
-    @Test
-    public void sendEmail_MailExceptionThrown_ShouldThrowEmailServiceException() {
-        // Test when a MailException is thrown and ensure EmailServiceException is thrown
-    }*/
 }
