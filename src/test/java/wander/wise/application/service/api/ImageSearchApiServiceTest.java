@@ -1,47 +1,45 @@
 package wander.wise.application.service.api;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.client.RestTemplate;
+import wander.wise.application.service.api.images.ImageSearchApiServiceImpl;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
 public class ImageSearchApiServiceTest {
-/*
-    // Test method for normal search key
-    @Test
-    public void getImageLinks_ValidSearchKey_ReturnsImageLinks() {
+    public static final String URL = "https://www.bing.com/images"
+            + "/search?q=&qft=+filterui:aspect-wide+filterui"
+            + ":imagesize-large&form=IRFLTR&first=1";
+    @Mock
+    private RestTemplate restTemplate;
 
+    @InjectMocks
+    private ImageSearchApiServiceImpl imageSearchApiService;
+
+    @Test
+    void testGetImageLinks_withValidData() throws IOException, NoSuchMethodException {
+        when(restTemplate.getForObject(anyString(), eq(String.class))).thenReturn("");
+        imageSearchApiService.getImageLinks("");
     }
-
-    // Test method for an empty search key
-    @Test
-    public void getImageLinks_EmptySearchKey_ReturnsEmptyString() {
-
-    }
-
-    // Test method for a search key with special characters
-    @Test
-    public void getImageLinks_SearchKeyWithSpecialCharacters_ReturnsEncodedImageLinks() {
-
-    }
-
-    // Test method for null search key
-    @Test
-    public void getImageLinks_NullSearchKey_ThrowsIllegalArgumentException() {
-
-    }
-
-    // Test method for a search key that returns no results
-    @Test
-    public void getImageLinks_SearchKeyWithNoResults_ReturnsEmptyString()
-    {}
-
-    // Test method for a very long search key
-    @Test
-    public void getImageLinks_VeryLongSearchKey_ReturnsTruncatedOrValidImageLinks() {
-
-    }
-
-    // Test method for a search key with whitespace
-    @Test
-    public void getImageLinks_SearchKeyWithWhitespace_ReturnsImageLinksWithoutLeadingOrTrailingWhitespace() {
-
-    }*/
 }

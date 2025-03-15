@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import wander.wise.application.config.ApisConfigProperties;
 import wander.wise.application.constants.GlobalConstants;
 import wander.wise.application.exception.custom.ImageSearchServiceException;
@@ -35,6 +36,7 @@ import static wander.wise.application.constants.GlobalConstants.SET_DIVIDER;
 @Service
 @RequiredArgsConstructor
 public class ImageSearchApiServiceImpl implements ImageSearchApiService {
+    private RestTemplate restTemplate = new RestTemplate();
     private static final String baseUrl = "https://www.bing.com/images/search?q=";
     private static final String paramsUrl = "&qft=+filterui:aspect-wide+filterui:imagesize-large&form=IRFLTR&first=1";
 
@@ -45,28 +47,13 @@ public class ImageSearchApiServiceImpl implements ImageSearchApiService {
     }
 
     private List<String> getUrls(String searchUrl) {
-        StringBuilder response = new StringBuilder();
-        try {
-            // Create a connection to the desired URL
-            URL url = new URL(searchUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            // Read the response
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
-            // Close the connection
-            connection.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String response = "";
+        response = restTemplate.getForObject(searchUrl, String.class);
+
         // Print the response
         String regex = "<li data-idx(?s).*?data-fnvg=";
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(response.toString());
+        Matcher matcher = pattern.matcher(response);
 
         List<String> extractedItems = new ArrayList<>();
         while (matcher.find()) {
